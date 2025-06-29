@@ -31,7 +31,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	float LookSensitivity = 0.4f;
+
+protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	/** Called for movement input */
+	void Move(const FInputActionValue& Value);
+
+	void Jump();
+	void StopJumping();
 	
 };

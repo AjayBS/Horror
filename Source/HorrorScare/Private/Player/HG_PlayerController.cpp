@@ -23,8 +23,11 @@ void AHG_PlayerController::SetupInputComponent()
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AHG_PlayerController::Look);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AHG_PlayerController::Move);
+
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AHG_PlayerController::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopJumping);
 	}
 	else
 	{
@@ -40,7 +43,40 @@ void AHG_PlayerController::Look(const FInputActionValue& Value)
 	if (GetCharacter() != nullptr)
 	{
 		// add yaw and pitch input to controller
-		GetCharacter()->AddControllerYawInput(LookAxisVector.X);
-		GetCharacter()->AddControllerPitchInput(-LookAxisVector.Y);
+		GetCharacter()->AddControllerYawInput(LookAxisVector.X * LookSensitivity);
+		GetCharacter()->AddControllerPitchInput(-LookAxisVector.Y * LookSensitivity);
 	}
+}
+
+void AHG_PlayerController::Move(const FInputActionValue& Value)
+{
+	// input is a Vector2D
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	if (GetCharacter() != nullptr)
+	{
+		// find out which way is forward
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		// get forward vector
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+		// get right vector 
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		// add movement 
+		GetCharacter()->AddMovementInput(ForwardDirection, MovementVector.Y);
+		GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
+	}
+}
+
+void AHG_PlayerController::Jump()
+{
+	GetCharacter()->Jump();
+}
+
+void AHG_PlayerController::StopJumping()
+{
+	GetCharacter()->StopJumping();
 }
