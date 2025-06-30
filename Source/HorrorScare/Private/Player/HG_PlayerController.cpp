@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
+#include "Player/L1_Character.h"
 
 void AHG_PlayerController::BeginPlay()
 {
@@ -15,6 +16,8 @@ void AHG_PlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(DefaultMappingContext, 1);
 	}
+
+	CharacterRef = Cast<AL1_Character>(GetCharacter());
 }
 
 void AHG_PlayerController::SetupInputComponent()
@@ -28,6 +31,8 @@ void AHG_PlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AHG_PlayerController::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopJumping);
+
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AHG_PlayerController::Interact);
 	}
 	else
 	{
@@ -79,4 +84,9 @@ void AHG_PlayerController::Jump()
 void AHG_PlayerController::StopJumping()
 {
 	GetCharacter()->StopJumping();
+}
+
+void AHG_PlayerController::Interact()
+{
+	CharacterRef->LineTrace(350.0f); // Example length, adjust as needed
 }

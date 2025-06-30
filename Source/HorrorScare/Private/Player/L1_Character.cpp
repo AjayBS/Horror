@@ -24,17 +24,32 @@ void AL1_Character::BeginPlay()
 	
 }
 
-// Called every frame
-void AL1_Character::Tick(float DeltaTime)
+void AL1_Character::LineTrace(float Length)
 {
-	Super::Tick(DeltaTime);
+    FVector Start;
+    FVector End;
+    FHitResult HitResult;
 
+    FRotator PlayerRot;
+    GetController()->GetPlayerViewPoint(Start, PlayerRot);
+	End = Start + PlayerRot.Vector() * Length;
+
+    // Line trace parameters
+    FCollisionQueryParams TraceParams;
+    TraceParams.AddIgnoredActor(this); // Ignore self
+
+    // Perform the line trace
+    bool bHit = GetWorld()->LineTraceSingleByChannel(
+        HitResult,
+        Start,
+        End,
+        ECC_Visibility,
+        TraceParams
+    );
+
+    // Check if we hit something
+    if (bHit)
+    {
+        BP_HitActor(HitResult);
+    }
 }
-
-// Called to bind functionality to input
-void AL1_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-

@@ -9,6 +9,7 @@
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
+class AL1_Character;
 
 /**
  * 
@@ -38,6 +39,9 @@ public:
 	UInputAction* JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* InteractAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
 
 protected:
@@ -49,5 +53,9 @@ protected:
 
 	void Jump();
 	void StopJumping();
+	void Interact();
+
+private:
+	AL1_Character* CharacterRef;
 	
 };
