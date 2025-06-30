@@ -7,6 +7,7 @@
 #include "L1_Character.generated.h"
 
 class UCameraComponent;
+class UHGUserWidget;
 
 UCLASS()
 class HORRORSCARE_API AL1_Character : public ACharacter
@@ -26,9 +27,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* FollowCamera;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	TSubclassOf<UHGUserWidget> HUDWidgetClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<UHGUserWidget> HUDWidget;
+
 	UFUNCTION(BlueprintCallable)
 	void LineTrace(float Length);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitActor(FHitResult HitResult);
+
+private:
+	void InitializeHUD();
 };

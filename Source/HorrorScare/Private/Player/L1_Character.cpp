@@ -4,6 +4,7 @@
 #include "Player/L1_Character.h"
 
 #include "Camera/CameraComponent.h"
+#include "UI/Widgets/HGUserWidget.h"
 
 // Sets default values
 AL1_Character::AL1_Character()
@@ -21,7 +22,7 @@ AL1_Character::AL1_Character()
 void AL1_Character::BeginPlay()
 {
 	Super::BeginPlay();
-	
+    InitializeHUD();
 }
 
 void AL1_Character::LineTrace(float Length)
@@ -52,4 +53,13 @@ void AL1_Character::LineTrace(float Length)
     {
         BP_HitActor(HitResult);
     }
+}
+
+void AL1_Character::InitializeHUD()
+{
+    HUDWidget = CreateWidget<UHGUserWidget>(GetWorld(), HUDWidgetClass);
+    if(HUDWidget)
+	{
+		HUDWidget->AddToViewport();
+	}
 }
