@@ -27,17 +27,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* FollowCamera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UHGUserWidget> HUDWidgetClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UHGUserWidget> HUDWidget;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Interactables")
+	TObjectPtr<UObject> GrabbedObject;
+
 	UFUNCTION(BlueprintCallable)
-	void LineTrace(float Length);
+	void LineTrace(float Length, bool bIsGrabbing);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitActor(FHitResult HitResult);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_GrabActor(FHitResult HitResult);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ReleaseActor();
 
 private:
 	void InitializeHUD();

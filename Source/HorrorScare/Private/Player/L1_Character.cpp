@@ -25,7 +25,7 @@ void AL1_Character::BeginPlay()
     InitializeHUD();
 }
 
-void AL1_Character::LineTrace(float Length)
+void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
 {
     FVector Start;
     FVector End;
@@ -51,7 +51,14 @@ void AL1_Character::LineTrace(float Length)
     // Check if we hit something
     if (bHit)
     {
-        BP_HitActor(HitResult);
+        if (!bIsGrabbing)
+        {
+            BP_HitActor(HitResult);
+        }
+        else
+        {
+            BP_GrabActor(HitResult);
+        }
     }
 }
 

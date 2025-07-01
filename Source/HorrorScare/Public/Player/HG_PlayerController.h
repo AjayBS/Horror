@@ -42,6 +42,9 @@ public:
 	UInputAction* InteractAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* LMBAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
 
 protected:
@@ -54,6 +57,8 @@ protected:
 	void Jump();
 	void StopJumping();
 	void Interact();
+	void GrabAction();
+	void ReleaseAction();
 
 private:
 	AL1_Character* CharacterRef;
