@@ -4,6 +4,8 @@
 #include "Player/L1_Character.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/SpotLightComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "UI/Widgets/HGUserWidget.h"
 
 // Sets default values
@@ -16,6 +18,14 @@ AL1_Character::AL1_Character()
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
     FollowCamera->SetupAttachment(GetMesh(), FName("head"));
     FollowCamera->bUsePawnControlRotation = true;
+
+    CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+    CameraBoom->SetupAttachment(FollowCamera);
+    CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
+    CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+
+    SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
+    SpotLightComponent->SetupAttachment(CameraBoom);
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +69,18 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
         {
             BP_GrabActor(HitResult);
         }
+    }
+}
+
+void AL1_Character::ToggleFlashlight()
+{
+    if (SpotLightComponent->IsVisible())
+    {
+        SpotLightComponent->SetVisibility(false);
+	}
+    else
+    {
+        SpotLightComponent->SetVisibility(true);
     }
 }
 

@@ -45,6 +45,9 @@ public:
 	UInputAction* LMBAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* FlashlightAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
 
 protected:
@@ -57,6 +60,7 @@ protected:
 	void Jump();
 	void StopJumping();
 	void Interact();
+	void Flashlight();
 	void GrabAction();
 	void ReleaseAction();
 

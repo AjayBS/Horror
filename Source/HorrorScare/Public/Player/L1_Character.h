@@ -7,7 +7,9 @@
 #include "L1_Character.generated.h"
 
 class UCameraComponent;
+class USpringArmComponent;
 class UHGUserWidget;
+class USpotLightComponent;
 
 UCLASS()
 class HORRORSCARE_API AL1_Character : public ACharacter
@@ -25,7 +27,13 @@ protected:
 public:
 	// Follow camera
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
-	UCameraComponent* FollowCamera;
+	TObjectPtr<UCameraComponent> FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	TObjectPtr<USpringArmComponent> CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light")
+	TObjectPtr<USpotLightComponent> SpotLightComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UHGUserWidget> HUDWidgetClass;
@@ -38,6 +46,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LineTrace(float Length, bool bIsGrabbing);
+
+	void ToggleFlashlight();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitActor(FHitResult HitResult);
