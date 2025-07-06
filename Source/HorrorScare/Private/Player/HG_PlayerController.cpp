@@ -7,6 +7,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
+#include "Player/BPC_Movement.h"
 #include "Player/L1_Character.h"
 
 void AHG_PlayerController::BeginPlay()
@@ -37,6 +38,8 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(LMBAction, ETriggerEvent::Completed, this, &AHG_PlayerController::ReleaseAction);
 
 		EnhancedInputComponent->BindAction(FlashlightAction, ETriggerEvent::Started, this, &AHG_PlayerController::Flashlight);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AHG_PlayerController::StartSprintAction);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopSprint);
 	}
 	else
 	{
@@ -116,5 +119,25 @@ void AHG_PlayerController::ReleaseAction()
 	if (CharacterRef)
 	{
 		CharacterRef->BP_ReleaseActor();
+	}
+}
+
+void AHG_PlayerController::StartSprintAction()
+{
+	if (CharacterRef)
+	{
+		CharacterRef->BPCMovementComponent->StartSprinting();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Character reference is null in StartSprintAction!"));
+	}
+}
+
+void AHG_PlayerController::StopSprint()
+{
+	if (CharacterRef)
+	{
+		CharacterRef->BPCMovementComponent->StopSprint();
 	}
 }

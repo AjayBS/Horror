@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UHGUserWidget;
 class USpotLightComponent;
+class UBPC_Movement;
 
 UCLASS()
 class HORRORSCARE_API AL1_Character : public ACharacter
@@ -40,6 +41,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UHGUserWidget> HUDWidget;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UBPC_Movement* BPCMovementComponent;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Interactables")
 	TObjectPtr<UObject> GrabbedObject;

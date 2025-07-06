@@ -48,6 +48,9 @@ public:
 	UInputAction* FlashlightAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SprintAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
 
 protected:
@@ -63,6 +66,8 @@ protected:
 	void Flashlight();
 	void GrabAction();
 	void ReleaseAction();
+	void StartSprintAction();
+	void StopSprint();
 
 private:
 	AL1_Character* CharacterRef;

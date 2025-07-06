@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/BPC_Movement.h"
 #include "UI/Widgets/HGUserWidget.h"
 
 // Sets default values
@@ -26,6 +27,9 @@ AL1_Character::AL1_Character()
 
     SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
     SpotLightComponent->SetupAttachment(CameraBoom);
+
+    BPCMovementComponent = CreateDefaultSubobject<UBPC_Movement>(TEXT("MovementComponent"));
+    
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +37,15 @@ void AL1_Character::BeginPlay()
 {
 	Super::BeginPlay();
     InitializeHUD();
+    
+    if (BPCMovementComponent)
+    {
+        BPCMovementComponent->Initialize(this);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("MovementComponent is not initialized!"));
+    }
 }
 
 void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
