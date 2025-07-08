@@ -5,6 +5,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "Components/SpotLightComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/BPC_Movement.h"
 #include "UI/Widgets/HGUserWidget.h"
@@ -94,6 +95,28 @@ void AL1_Character::ToggleFlashlight()
     else
     {
         SpotLightComponent->SetVisibility(true);
+    }
+}
+
+void AL1_Character::HeadBob()
+{
+    if ((GetVelocity().Size() >= BPCMovementComponent->WalkSpeed) && !GetCharacterMovement()->IsFalling())
+    {
+        float Mapped = FMath::GetMappedRangeValueClamped(
+            FVector2D(0.0f, GetCharacterMovement()->MaxWalkSpeed),   // Input range
+            FVector2D(0.0f, 1.0f),     // Output range
+            GetVelocity().Size()
+        );
+
+        if ((GetVelocity().Size() >= BPCMovementComponent->SprintSpeed) && !GetCharacterMovement()->IsFalling())
+        {
+            
+            BP_PlayCameraShake(true, Mapped);
+        }
+        else
+        {
+            BP_PlayCameraShake(false, Mapped);
+        }
     }
 }
 

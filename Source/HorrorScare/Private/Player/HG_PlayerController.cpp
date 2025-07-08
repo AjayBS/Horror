@@ -82,6 +82,15 @@ void AHG_PlayerController::Move(const FInputActionValue& Value)
 		// add movement 
 		GetCharacter()->AddMovementInput(ForwardDirection, MovementVector.Y);
 		GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
+
+		if (CharacterRef)
+		{
+			CharacterRef->HeadBob();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Character reference is null in Move!"));
+		}
 	}
 }
 

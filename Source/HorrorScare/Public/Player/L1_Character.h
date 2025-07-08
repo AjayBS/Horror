@@ -53,6 +53,8 @@ public:
 
 	void ToggleFlashlight();
 
+	void HeadBob();
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_HitActor(FHitResult HitResult);
 
@@ -67,6 +69,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_LengthenPlayerCapsule();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_PlayCameraShake(bool bIsSprinting, float MappedValue);
 
 private:
 	void InitializeHUD();
