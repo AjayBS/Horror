@@ -5,6 +5,7 @@
 
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/L1_Character.h"
 #include "TimerManager.h"
 
 // Sets default values for this component's properties
@@ -36,7 +37,7 @@ void UBPC_Movement::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	// ...
 }
 
-void UBPC_Movement::Initialize(ACharacter* InCharacter)
+void UBPC_Movement::Initialize(AL1_Character* InCharacter)
 {
 	Character = InCharacter;
 	if (Character)
@@ -52,6 +53,11 @@ void UBPC_Movement::Initialize(ACharacter* InCharacter)
 
 void UBPC_Movement::StartSprinting()
 {
+	if (IsCrouching())
+	{
+		EndCrouch();
+	}
+
 	if((CurrentStamina > MinStamina) && (Character->GetVelocity().Size() > 10.f))
 	{
 		GetWorld()->GetTimerManager().ClearTimer(StaminaRegenHandle);
@@ -73,19 +79,46 @@ void UBPC_Movement::StartSprinting()
 
 void UBPC_Movement::StopSprint()
 {
+	if (!IsCrouching())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(SprintTimerHandle);
+		Character->GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; // Reset to walk speed
+
+		GetWorld()->GetTimerManager().ClearTimer(DelayHandle);
+
+		GetWorld()->GetTimerManager().SetTimer(
+			DelayHandle,
+			this,
+			&UBPC_Movement::OnDelayFinished,
+			5.0f,       // Delay duration in seconds
+			false       // Not looping
+		);
+	}
+}
+
+void UBPC_Movement::StartCrouch()
+{
 	GetWorld()->GetTimerManager().ClearTimer(SprintTimerHandle);
-	Character->GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; // Reset to walk speed
+	Character->GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed;
 
-	GetWorld()->GetTimerManager().ClearTimer(DelayHandle);
+	if (Character)
+	{
+		Character->BP_ShortenPlayerCapsule();
+	}
 
-	GetWorld()->GetTimerManager().SetTimer(
-		DelayHandle,
-		this,
-		&UBPC_Movement::OnDelayFinished,
-		5.0f,       // Delay duration in seconds
-		false       // Not looping
-	);
+	bIsCrouching = true;
+}
 
+void UBPC_Movement::EndCrouch()
+{
+	Character->GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+
+	if (Character)
+	{
+		Character->BP_LengthenPlayerCapsule();
+	}
+
+	bIsCrouching = false;
 }
 
 void UBPC_Movement::SprintTimer()

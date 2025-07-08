@@ -62,6 +62,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ReleaseActor();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ShortenPlayerCapsule();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_LengthenPlayerCapsule();
+
 private:
 	void InitializeHUD();
 };

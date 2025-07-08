@@ -51,6 +51,9 @@ public:
 	UInputAction* SprintAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* CrouchAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
 
 protected:
@@ -68,6 +71,8 @@ protected:
 	void ReleaseAction();
 	void StartSprintAction();
 	void StopSprint();
+
+	void Crouch();
 
 private:
 	AL1_Character* CharacterRef;

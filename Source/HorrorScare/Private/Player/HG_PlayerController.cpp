@@ -40,6 +40,8 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(FlashlightAction, ETriggerEvent::Started, this, &AHG_PlayerController::Flashlight);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AHG_PlayerController::StartSprintAction);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopSprint);
+
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AHG_PlayerController::Crouch);
 	}
 	else
 	{
@@ -141,3 +143,23 @@ void AHG_PlayerController::StopSprint()
 		CharacterRef->BPCMovementComponent->StopSprint();
 	}
 }
+
+void AHG_PlayerController::Crouch()
+{
+	if (CharacterRef)
+	{
+		if (CharacterRef->BPCMovementComponent->IsCrouching())
+		{
+			CharacterRef->BPCMovementComponent->EndCrouch();
+		}
+		else
+		{
+			CharacterRef->BPCMovementComponent->StartCrouch();
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Character reference is null in CrouchAction!"));
+	}
+}
+
