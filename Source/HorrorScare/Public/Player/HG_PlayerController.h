@@ -54,10 +54,18 @@ public:
 	UInputAction* CrouchAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* InventoryAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> InventoryWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	int32 InventorySlots = 8;
+
+	void ToggleInventory();
 
 protected:
 	/** Called for looking input */
@@ -75,9 +83,10 @@ protected:
 	void StartSprintAction();
 	void StopSprint();
 
-	void Crouch();
+	void Crouch();	
 
 private:
 	AL1_Character* CharacterRef;
-	
+	TObjectPtr<UUserWidget> InventoryWidget;
+	bool bIsPaused = false;
 };

@@ -3,10 +3,12 @@
 
 #include "Player/HG_PlayerController.h"
 
+#include "Blueprint/UserWidget.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Player/BPC_Movement.h"
 #include "Player/L1_Character.h"
 
@@ -19,6 +21,10 @@ void AHG_PlayerController::BeginPlay()
 	}
 
 	CharacterRef = Cast<AL1_Character>(GetCharacter());
+
+	InventoryWidget = CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass);
+	InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+	InventoryWidget->AddToViewport();
 }
 
 void AHG_PlayerController::SetupInputComponent()
@@ -42,10 +48,41 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopSprint);
 
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AHG_PlayerController::Crouch);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AHG_PlayerController::ToggleInventory);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
+}
+
+void AHG_PlayerController::ToggleInventory()
+{
+	if (!bIsPaused)
+	{
+		bIsPaused = true;
+		CharacterRef->GetCharacterMovement()->DisableMovement();
+		SetIgnoreLookInput(true);
+		SetShowMouseCursor(true);
+		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+
+		FInputModeGameAndUI InputMode;
+		InputMode.SetWidgetToFocus(InventoryWidget->TakeWidget()); // Focus on the widget
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // Optional
+		InputMode.SetHideCursorDuringCapture(true); // Optional
+
+		SetInputMode(InputMode);
+	}
+	else
+	{
+		bIsPaused = false;
+		CharacterRef->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+		ResetIgnoreLookInput();
+		SetShowMouseCursor(false);
+		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+
+		FInputModeGameOnly InputMode;
+		SetInputMode(InputMode);
 	}
 }
 
