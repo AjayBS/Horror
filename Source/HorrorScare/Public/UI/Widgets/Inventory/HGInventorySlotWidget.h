@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UI/Widgets/HGUserWidget.h"
+#include "Managers/HGWorldSubsystem.h"
 #include "HGInventorySlotWidget.generated.h"
 
 class UButton;
 class UImage;
+
 /**
  * 
  */
@@ -23,7 +25,12 @@ public:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	TObjectPtr<UImage> SlotImage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true));
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	int32 Index;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	FItemData ItemData;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	float Amount;
 };
