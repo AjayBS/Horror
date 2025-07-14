@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/BPC_Movement.h"
 #include "Player/L1_Character.h"
+#include "UI/Widgets/Inventory/InventoryMenuWidget.h"
 
 void AHG_PlayerController::BeginPlay()
 {
@@ -22,7 +23,7 @@ void AHG_PlayerController::BeginPlay()
 
 	CharacterRef = Cast<AL1_Character>(GetCharacter());
 
-	InventoryWidget = CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass);
+	InventoryWidget = CreateWidget<UInventoryMenuWidget>(GetWorld(), InventoryWidgetClass);
 	InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
 	InventoryWidget->AddToViewport();
 }

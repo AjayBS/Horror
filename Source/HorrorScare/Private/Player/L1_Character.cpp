@@ -4,6 +4,7 @@
 #include "Player/L1_Character.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/BPCInventory.h"
 #include "Components/SpotLightComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -30,6 +31,7 @@ AL1_Character::AL1_Character()
     SpotLightComponent->SetupAttachment(CameraBoom);
 
     BPCMovementComponent = CreateDefaultSubobject<UBPC_Movement>(TEXT("MovementComponent"));
+    BPCInventoryComponent = CreateDefaultSubobject<UBPCInventory>(TEXT("InventoryComponent"));
     
 }
 

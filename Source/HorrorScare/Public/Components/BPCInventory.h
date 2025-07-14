@@ -23,6 +23,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	bool AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amount);
 
+	FInventoryItems GetItemDataAtIndex(int32 Index);
+
+	void UpdateInventorySlot(int32 Index);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;	

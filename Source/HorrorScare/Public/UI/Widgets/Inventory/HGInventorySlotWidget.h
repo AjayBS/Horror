@@ -9,6 +9,7 @@
 
 class UButton;
 class UImage;
+class AL1_Character;
 
 /**
  * 
@@ -33,4 +34,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	float Amount;
+
+	TObjectPtr<AL1_Character> PlayerRef;
+
+	void InitializeSlot();
+	void UpdateSlot();
+
 };

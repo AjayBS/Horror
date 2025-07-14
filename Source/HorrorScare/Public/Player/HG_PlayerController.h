@@ -8,6 +8,7 @@
 
 class UInputAction;
 class UInputMappingContext;
+class UInventoryMenuWidget;
 struct FInputActionValue;
 class AL1_Character;
 
@@ -57,7 +58,9 @@ public:
 	UInputAction* InventoryAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UUserWidget> InventoryWidgetClass;
+	TSubclassOf<UInventoryMenuWidget> InventoryWidgetClass;
+
+	TObjectPtr<UInventoryMenuWidget> InventoryWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
@@ -86,7 +89,6 @@ protected:
 	void Crouch();	
 
 private:
-	AL1_Character* CharacterRef;
-	TObjectPtr<UUserWidget> InventoryWidget;
+	AL1_Character* CharacterRef;	
 	bool bIsPaused = false;
 };
