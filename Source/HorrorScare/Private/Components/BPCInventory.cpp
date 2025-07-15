@@ -28,28 +28,118 @@ void UBPCInventory::BeginPlay()
 	}	
 }
 
-bool UBPCInventory::AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amount)
+bool UBPCInventory::AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amount, int32& Remainder)
 {
 	bool bSuccess = false;
-	int32 localIndex = -1;
-	CheckForEmptySlot(bSuccess, localIndex);
+	Remainder = -1;
+	TSubclassOf<AInventoryItem_Master> LocalItem = Item;
+	float LocalAmount = Amount;
 
-	if (bSuccess)
+	AInventoryItem_Master* ItemInstance = Item.GetDefaultObject();
+	int32 LocalMaxStackAmount = ItemInstance->ItemData.MaxStackAmount;
+	int32 LocalIndex = -1;
+
+	if (LocalMaxStackAmount > 1)
 	{
-		FInventoryItems NewItem;
-		NewItem.Item = Item;
-		NewItem.Amount = Amount;
-		NewItem.bFilled = true;
-		InventoryItems[localIndex] = NewItem;
-		UpdateInventorySlot(localIndex);
+		// Stackable items, first check if the slot is available in inventory
+		if (CheckForFreeSlot(LocalItem, LocalIndex))
+		{
+			// If the item already exists in the inventory, check if it can be stacked
+			FInventoryItems ItemData = GetItemDataAtIndex(LocalIndex);
+
+			// If the item can be stacked, check if the amount exceeds the max stack amount
+			if (ItemData.Amount + LocalAmount > LocalMaxStackAmount)
+			{
+				// Fill the item with the max stack amount and call AddItem again with the remaining amount
+				float ExcessAmount = ItemData.Amount + LocalAmount - LocalMaxStackAmount;
+				FInventoryItems NewItem;
+				NewItem.Item = LocalItem;
+				NewItem.Amount = LocalMaxStackAmount;
+				NewItem.bFilled = true;
+				InventoryItems[LocalIndex] = NewItem;
+				UpdateInventorySlot(LocalIndex);
+				AddItem(LocalItem, ExcessAmount, Remainder);
+				return true;
+			}
+			else
+			{
+				// Simply add if it doesnt
+				FInventoryItems NewItem;
+				NewItem.Item = LocalItem;
+				NewItem.Amount = ItemData.Amount + LocalAmount;
+				NewItem.bFilled = true;
+				InventoryItems[LocalIndex] = NewItem;
+				UpdateInventorySlot(LocalIndex);
+				Remainder = 0;
+				return true;
+			}
+		}
+		else
+		{
+			// New item so check for empty slot and add it else return false
+			if (CheckForEmptySlot(LocalIndex))
+			{
+				// If amount is more than the stack amount then  fill it to the max and call AddItem again with the remaining amount
+				if (LocalAmount > LocalMaxStackAmount)
+				{
+					FInventoryItems NewItem;
+					NewItem.Item = LocalItem;
+					NewItem.Amount = LocalMaxStackAmount;
+					NewItem.bFilled = true;
+					InventoryItems[LocalIndex] = NewItem;
+					UpdateInventorySlot(LocalIndex);
+					AddItem(LocalItem, LocalAmount - LocalMaxStackAmount, Remainder);
+					return true;
+				}
+				else
+				{
+					// Add the item to the empty slot
+					FInventoryItems NewItem;
+					NewItem.Item = LocalItem;
+					NewItem.Amount = LocalAmount;
+					NewItem.bFilled = true;
+					InventoryItems[LocalIndex] = NewItem;
+					UpdateInventorySlot(LocalIndex);
+					Remainder = 0;
+
+					return true;
+				}
+			}
+			else
+			{
+				// No free or empty slots available
+				Remainder = LocalAmount;
+				return false;
+			}
+		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Inventory is full!"));
-		return false;
-	}
+		// Unique item added to the inventory, if Empty slot is found.
+		if (CheckForEmptySlot(LocalIndex))
+		{
+			FInventoryItems NewItem;
+			NewItem.Item = Item;
+			NewItem.Amount = 1;
+			NewItem.bFilled = true;
+			InventoryItems[LocalIndex] = NewItem;
+			UpdateInventorySlot(LocalIndex);
+			LocalAmount--;
+			if (LocalAmount > 0)
+			{
+				AddItem(LocalItem, LocalAmount, Remainder);
+				return true;
+			}
+			else
+			{
+				Remainder = 0;
+				return true;
+			}			
+		}
 
-	return true;
+		Remainder = LocalAmount;
+		return false;
+	}	
 }
 
 FInventoryItems UBPCInventory::GetItemDataAtIndex(int32 Index)
@@ -76,9 +166,24 @@ void UBPCInventory::UpdateInventorySlot(int32 Index)
 	}
 }
 
-void UBPCInventory::CheckForEmptySlot(bool& bSuccess, int32& Index)
+bool UBPCInventory::CheckForFreeSlot(TSubclassOf<AInventoryItem_Master> Item, int32& Index)
 {
-	bSuccess = false;
+	AInventoryItem_Master* ItemInstance = Item.GetDefaultObject();
+	Index = -1;
+	for(int32 i = 0; i < InventoryItems.Num(); i++)
+	{
+		if (InventoryItems[i].Item == Item && InventoryItems[i].Amount < ItemInstance->ItemData.MaxStackAmount)
+		{
+			Index = i;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UBPCInventory::CheckForEmptySlot(int32& Index)
+{
 	Index = -1;
 
 	for (int32 i = 0; i < InventoryItems.Num(); i++)
@@ -86,9 +191,10 @@ void UBPCInventory::CheckForEmptySlot(bool& bSuccess, int32& Index)
 		if (!InventoryItems[i].bFilled)
 		{
 			Index = i;
-			bSuccess = true;
-			break;
+			return true;
 		}
 	}
+
+	return false;
 }
 

@@ -4,6 +4,7 @@
 #include "UI/Widgets/Inventory/HGInventorySlotWidget.h"
 #include "Actors/InventoryItem_Master.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Components/BPCInventory.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/L1_Character.h"
@@ -22,6 +23,8 @@ void UHGInventorySlotWidget::UpdateSlot()
 		if (Item)
 		{
 			SlotImage->SetBrushFromTexture(Item->ItemData.Icon);
+			SlotAmount->SetText(FText::AsNumber(ItemTempData.Amount));
+			SlotAmount->SetVisibility(ItemTempData.Amount > 1 ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		}
 		else
 		{

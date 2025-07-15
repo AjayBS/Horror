@@ -21,14 +21,17 @@ public:
 	UBPCInventory();
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	bool AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amount);
+	bool AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amount, int32& Remainder);
 
 	FInventoryItems GetItemDataAtIndex(int32 Index);
 
 	void UpdateInventorySlot(int32 Index);
 
+	bool CheckForFreeSlot(TSubclassOf<AInventoryItem_Master> Item, int32& Remainder);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;	
-	void CheckForEmptySlot(bool& bSuccess, int32& Index);
+	void AddItemToInventoryList();
+	bool CheckForEmptySlot(int32& Index);
 };

@@ -9,6 +9,7 @@
 
 class UButton;
 class UImage;
+class UTextBlock;
 class AL1_Character;
 
 /**
@@ -25,6 +26,9 @@ public:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	TObjectPtr<UImage> SlotImage;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	TObjectPtr<UTextBlock> SlotAmount;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	int32 Index;
