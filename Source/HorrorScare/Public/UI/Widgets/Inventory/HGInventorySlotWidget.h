@@ -39,6 +39,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	float Amount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Icons")
+	TObjectPtr<UTexture2D> EmptyIcon;
+
 	TObjectPtr<AL1_Character> PlayerRef;
 
 	void InitializeSlot();
