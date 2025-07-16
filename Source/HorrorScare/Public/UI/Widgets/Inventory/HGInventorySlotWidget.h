@@ -11,6 +11,7 @@ class UButton;
 class UImage;
 class UTextBlock;
 class AL1_Character;
+class UInventoryMenuWidget;
 
 /**
  * 
@@ -42,9 +43,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Icons")
 	TObjectPtr<UTexture2D> EmptyIcon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Icons")
+	TObjectPtr<UInventoryMenuWidget> InventoryMenuRef;
+
 	TObjectPtr<AL1_Character> PlayerRef;
 
-	void InitializeSlot();
+	virtual void NativeConstruct() override;
+	void InitializeSlot(UInventoryMenuWidget* InventoryMenu);
 	void UpdateSlot();
+
+	UFUNCTION()
+	void OnSlotClicked();
 
 };
