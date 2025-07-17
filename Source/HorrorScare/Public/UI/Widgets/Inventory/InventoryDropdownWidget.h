@@ -46,4 +46,7 @@ public:
 
 	UFUNCTION()
 	void UseButtonPressed();
+
+	UFUNCTION()
+	void DropButtonPressed();
 };

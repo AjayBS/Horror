@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "Actors/InventoryItems/Pickup/PickupActors.h"
 #include "HGWorldSubsystem.generated.h"
+
+class APickupActors;
 
 USTRUCT(BlueprintType)
 struct FItemData
@@ -23,6 +26,12 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
     bool bCanBeUsed = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    bool bCanBeDropped = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    TSubclassOf<APickupActors> PickupActor;
 };
 
 /**

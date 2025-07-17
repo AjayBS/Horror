@@ -44,8 +44,8 @@ void UInventoryMenuWidget::OpenDropDownMenu(UHGInventorySlotWidget* InSlot)
 	int32 Row = GridSlot->Row + 1;
 	int32 Column = GridSlot->Column + 0;
 
-	int32 XSize = InSlot->GetDesiredSize().X + InventoryGrid->InventoryGridPanel->SlotPadding.Left + InventoryGrid->InventoryGridPanel->SlotPadding.Right;
-	int32 YSize = InSlot->GetDesiredSize().Y + InventoryGrid->InventoryGridPanel->SlotPadding.Top + InventoryGrid->InventoryGridPanel->SlotPadding.Bottom;
+	int32 XSize = InSlot->GetDesiredSize().X + InventoryGrid->InventoryGridPanel->GetSlotPadding().Left + InventoryGrid->InventoryGridPanel->GetSlotPadding().Right;
+	int32 YSize = InSlot->GetDesiredSize().Y + InventoryGrid->InventoryGridPanel->GetSlotPadding().Top + InventoryGrid->InventoryGridPanel->GetSlotPadding().Bottom;
 
 	InventoryDropDown->SetRenderTranslation(FVector2D((Column * XSize) + 10.0f, (Row * YSize) + -10.0f));
 	InventoryDropDown->UpdateMenu(InSlot);

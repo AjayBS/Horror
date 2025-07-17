@@ -21,14 +21,8 @@ public:
 	TSubclassOf<AInventoryItem_Master> Item;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	TObjectPtr<UStaticMeshComponent> StaticMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	float Amount;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };

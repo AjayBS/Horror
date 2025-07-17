@@ -2,6 +2,8 @@
 
 
 #include "Components/BPCInventory.h"
+
+#include "Actors/InventoryItem_Master.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/HG_PlayerController.h"
 #include "UI/Widgets/Inventory/HGInventoryGrid.h"
@@ -13,11 +15,11 @@ void UBPCInventory::BeginPlay()
 	Super::BeginPlay();
 
 	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	AHG_PlayerController* HGPlayerController = Cast<AHG_PlayerController>(PC);
-	if (HGPlayerController)
+	PlayerControllerRef = Cast<AHG_PlayerController>(PC);
+	if (PlayerControllerRef)
 	{
-		InventoryItems.SetNum(HGPlayerController->InventorySlots);
-		InventoryWidgetRef = HGPlayerController->InventoryWidget;
+		InventoryItems.SetNum(PlayerControllerRef->InventorySlots);
+		InventoryWidgetRef = PlayerControllerRef->InventoryWidget;
 	}	
 }
 
@@ -187,6 +189,22 @@ void UBPCInventory::UseItem(int32 Index)
 	}	
 }
 
+void UBPCInventory::DropItem(int32 Index)
+{
+	FInventoryItems ItemTempData = GetItemDataAtIndex(Index);
+	int32 LocalAmount = ItemTempData.Amount;
+	if (LocalAmount > 0)
+	{
+		for (int32 i = 0; i < LocalAmount; i++)
+		{
+			RemoveItem(Index);
+		}
+
+		InventoryWidgetRef->CloseDropDownMenu();
+		SpawnDroppedItem(ItemTempData.Item, LocalAmount);
+	}
+}
+
 FInventoryItems UBPCInventory::GetItemDataAtIndex(int32 Index)
 {
 	if (Index < InventoryItems.Num())
@@ -225,6 +243,55 @@ bool UBPCInventory::CheckForFreeSlot(TSubclassOf<AInventoryItem_Master> Item, in
 	}
 
 	return false;
+}
+
+void UBPCInventory::SpawnDroppedItem(TSubclassOf<AInventoryItem_Master> Item, int32 Amount)
+{
+	AInventoryItem_Master* ItemInstance = Item.GetDefaultObject();
+
+	FVector Start;
+	FVector End;
+	FHitResult HitResult;
+
+	FRotator PlayerRot;
+	PlayerControllerRef->GetPlayerViewPoint(Start, PlayerRot);
+	End = Start + PlayerRot.Vector() * 200.f;
+
+	// Line trace parameters
+	FCollisionQueryParams TraceParams;
+
+	// Perform the line trace
+	bool bHit = GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		Start,
+		End,
+		ECC_Visibility,
+		TraceParams
+	);
+
+	FVector SpawnLocation;
+	FRotator SpawnRotation(0.f, 0.f, 0.f);
+	if (bHit)
+	{
+		SpawnLocation = HitResult.Location;
+	}
+	else
+	{
+		SpawnLocation = HitResult.TraceEnd;
+	}
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	UWorld* World = GetWorld();
+
+	APickupActors* SpawnedActor = World->SpawnActor<APickupActors>(
+		ItemInstance->ItemData.PickupActor,
+		FTransform(SpawnRotation, SpawnLocation)
+	);
+
+	SpawnedActor->Amount = Amount;
+	SpawnedActor->StaticMesh->SetSimulatePhysics(true);
 }
 
 bool UBPCInventory::CheckForEmptySlot(int32& Index)
