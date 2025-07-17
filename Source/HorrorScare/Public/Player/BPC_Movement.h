@@ -13,14 +13,6 @@ class HORRORSCARE_API UBPC_Movement : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UBPC_Movement();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
 public:
 	TObjectPtr<AL1_Character> Character;
 
@@ -47,10 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Crouch")
 	float CrouchHalfHeight = 44.f;
-
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
+		
 	UFUNCTION(BlueprintCallable)
 	void Initialize(AL1_Character* InCharacter);
 

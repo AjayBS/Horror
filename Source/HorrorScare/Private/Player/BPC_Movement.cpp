@@ -8,35 +8,6 @@
 #include "Player/L1_Character.h"
 #include "TimerManager.h"
 
-// Sets default values for this component's properties
-UBPC_Movement::UBPC_Movement()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
-}
-
-
-// Called when the game starts
-void UBPC_Movement::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UBPC_Movement::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
 void UBPC_Movement::Initialize(AL1_Character* InCharacter)
 {
 	Character = InCharacter;

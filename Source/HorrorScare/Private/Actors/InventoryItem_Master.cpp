@@ -11,3 +11,7 @@ AInventoryItem_Master::AInventoryItem_Master()
 
 }
 
+void AInventoryItem_Master::UseItem()
+{
+}
+

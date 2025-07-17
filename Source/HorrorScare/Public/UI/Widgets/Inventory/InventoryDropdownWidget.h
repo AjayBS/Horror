@@ -8,6 +8,8 @@
 
 class UButton;
 class USizeBox;
+class AL1_Character;
+class UHGInventorySlotWidget;
 
 /**
  * 
@@ -35,5 +37,13 @@ public:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	TObjectPtr<USizeBox> DropSection;
-	
+
+	TObjectPtr<AL1_Character> PlayerRef;
+	int32 SlotIndex;
+
+	virtual void NativeConstruct() override;
+	void UpdateMenu(UHGInventorySlotWidget* InSlot);
+
+	UFUNCTION()
+	void UseButtonPressed();
 };

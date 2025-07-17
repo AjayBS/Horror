@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "Components/UniformGridSlot.h"
 #include "Components/UniformGridPanel.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/Widgets/Inventory/HGInventoryGrid.h"
 #include "UI/Widgets/Inventory/HGInventorySlotWidget.h"
 #include "UI/Widgets/Inventory/InventoryDropdownWidget.h"
@@ -47,13 +48,33 @@ void UInventoryMenuWidget::OpenDropDownMenu(UHGInventorySlotWidget* InSlot)
 	int32 YSize = InSlot->GetDesiredSize().Y + InventoryGrid->InventoryGridPanel->SlotPadding.Top + InventoryGrid->InventoryGridPanel->SlotPadding.Bottom;
 
 	InventoryDropDown->SetRenderTranslation(FVector2D((Column * XSize) + 10.0f, (Row * YSize) + -10.0f));
+	InventoryDropDown->UpdateMenu(InSlot);
 
 	InventoryDropDown->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	CloseDropDownMenuButton->SetVisibility(ESlateVisibility::Visible);
+
+	GetWorld()->GetTimerManager().SetTimer(
+		DropDownTimerHandle,
+		this,
+		&UInventoryMenuWidget::FocusOnCloseButton,
+		0.5f,
+		true
+	);
 }
 
 void UInventoryMenuWidget::CloseDropDownMenu()
 {
 	InventoryDropDown->SetVisibility(ESlateVisibility::Collapsed);
 	CloseDropDownMenuButton->SetVisibility(ESlateVisibility::Collapsed);
+
+	GetWorld()->GetTimerManager().ClearTimer(DropDownTimerHandle);
+}
+
+void UInventoryMenuWidget::FocusOnCloseButton()
+{
+	if (CloseDropDownMenuButton)
+	{
+		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		CloseDropDownMenuButton->SetUserFocus(PC);
+	}
 }

@@ -34,4 +34,10 @@ public:
 
 	UFUNCTION()
 	void CloseDropDownMenu();
+
+	UFUNCTION()
+	void FocusOnCloseButton();
+
+private:
+	FTimerHandle DropDownTimerHandle;
 };

@@ -8,14 +8,6 @@
 #include "UI/Widgets/Inventory/HGInventorySlotWidget.h"
 #include "UI/Widgets/Inventory/InventoryMenuWidget.h"
 
-// Sets default values for this component's properties
-UBPCInventory::UBPCInventory()
-{
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
-}
-
 void UBPCInventory::BeginPlay()
 {
 	Super::BeginPlay();
@@ -25,6 +17,7 @@ void UBPCInventory::BeginPlay()
 	if (HGPlayerController)
 	{
 		InventoryItems.SetNum(HGPlayerController->InventorySlots);
+		InventoryWidgetRef = HGPlayerController->InventoryWidget;
 	}	
 }
 
@@ -139,6 +132,58 @@ bool UBPCInventory::AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amoun
 
 		Remainder = LocalAmount;
 		return false;
+	}	
+}
+
+void UBPCInventory::RemoveItem(int32 Index)
+{
+	FInventoryItems ItemTempData = GetItemDataAtIndex(Index);
+	if (ItemTempData.Amount > 1)
+	{
+		if (Index >= 0 && Index < InventoryItems.Num())
+		{
+			InventoryItems[Index].bFilled = true;
+			InventoryItems[Index].Item = ItemTempData.Item;
+			InventoryItems[Index].Amount = ItemTempData.Amount - 1;
+			UpdateInventorySlot(Index);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Index %d is out of bounds for InventoryItems array."), Index);
+		}
+	}
+	else
+	{
+		// Remove the item from the inventory
+		if (Index >= 0 && Index < InventoryItems.Num())
+		{
+			InventoryItems[Index].bFilled = false;
+			InventoryItems[Index].Item = nullptr;
+			InventoryItems[Index].Amount = 0;
+			UpdateInventorySlot(Index);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Index %d is out of bounds for InventoryItems array."), Index);
+		}
+	}
+	
+}
+
+void UBPCInventory::UseItem(int32 Index)
+{
+	FInventoryItems ItemTempData = GetItemDataAtIndex(Index);
+	AInventoryItem_Master* Item = ItemTempData.Item->GetDefaultObject<AInventoryItem_Master>();
+
+	if(ItemTempData.Amount > 0)
+	{
+		if (Item)
+		{
+			Item->UseItem();
+		}
+
+		RemoveItem(Index);
+		InventoryWidgetRef->CloseDropDownMenu();
 	}	
 }
 

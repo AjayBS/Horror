@@ -35,6 +35,6 @@ public:
 
 	// Sets default values for this actor's properties
 	AInventoryItem_Master();
-
+	virtual void UseItem();
 
 };

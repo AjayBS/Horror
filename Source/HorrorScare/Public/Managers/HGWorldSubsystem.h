@@ -20,6 +20,9 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
     int32 MaxStackAmount;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    bool bCanBeUsed = true;
 };
 
 /**
