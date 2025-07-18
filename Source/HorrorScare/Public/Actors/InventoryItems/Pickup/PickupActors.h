@@ -7,6 +7,7 @@
 #include "PickupActors.generated.h"
 
 class AInventoryItem_Master;
+class UWidgetComponent;
 
 UCLASS()
 class HORRORSCARE_API APickupActors : public AActor
@@ -21,8 +22,8 @@ public:
 	TSubclassOf<AInventoryItem_Master> Item;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
-	TObjectPtr<UStaticMeshComponent> StaticMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	float Amount;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Pickup")
+	void BP_SetSimulation();
 };

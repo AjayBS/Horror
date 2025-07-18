@@ -291,7 +291,7 @@ void UBPCInventory::SpawnDroppedItem(TSubclassOf<AInventoryItem_Master> Item, in
 	);
 
 	SpawnedActor->Amount = Amount;
-	SpawnedActor->StaticMesh->SetSimulatePhysics(true);
+	SpawnedActor->BP_SetSimulation();
 }
 
 bool UBPCInventory::CheckForEmptySlot(int32& Index)
