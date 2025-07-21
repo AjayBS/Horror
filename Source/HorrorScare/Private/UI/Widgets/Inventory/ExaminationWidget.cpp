@@ -34,6 +34,8 @@ void UExaminationWidget::UpdateWidget(int32 Index)
 			HGWorldSS->ExaminationRef->ItemMesh->SetRelativeLocation(FVector(HGWorldSS->ExaminationRef->ItemMesh->GetRelativeLocation().X + ItemInstance.Item.GetDefaultObject()->ItemData.ExaminationMeshOffset,
 				HGWorldSS->ExaminationRef->ItemMesh->GetRelativeLocation().Y, 
 				HGWorldSS->ExaminationRef->ItemMesh->GetRelativeLocation().Z));
+
+			HGWorldSS->ExaminationRef->ItemMesh->SetRelativeRotation(ItemInstance.Item.GetDefaultObject()->ItemData.ExaminationMeshRotation);
 		}
 
 		ItemName->SetText(ItemInstance.Item.GetDefaultObject()->ItemData.ItemName);

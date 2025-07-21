@@ -45,6 +45,9 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
     float ExaminationMeshOffset;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    FRotator ExaminationMeshRotation;
 };
 
 /**

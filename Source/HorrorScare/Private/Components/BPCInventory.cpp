@@ -22,9 +22,7 @@ void UBPCInventory::BeginPlay()
 		InventoryItems.SetNum(PlayerControllerRef->InventorySlots);
 		InventoryWidgetRef = PlayerControllerRef->InventoryWidget;
 
-		ExaminationWidget = CreateWidget<UExaminationWidget>(GetWorld(), ExaminationWidgetClass);
-		ExaminationWidget->BPCInventoryRef = this;
-		PlayerControllerRef->ExaminationWidget = ExaminationWidget;
+		CreateExaminationWidgetInstance();
 	}	
 }
 
@@ -315,16 +313,27 @@ bool UBPCInventory::CheckForEmptySlot(int32& Index)
 	return false;
 }
 
+void UBPCInventory::CreateExaminationWidgetInstance()
+{
+	ExaminationWidget = CreateWidget<UExaminationWidget>(GetWorld(), ExaminationWidgetClass);
+	ExaminationWidget->BPCInventoryRef = this;
+	PlayerControllerRef->ExaminationWidget = ExaminationWidget;
+}
+
 void UBPCInventory::CreateExaminationWidget(int32 Index)
 {
+	if (!ExaminationWidget->IsInViewport())
+	{
+		CreateExaminationWidgetInstance();
+		ExaminationWidget->AddToViewport(2);
+	}
+
 	ExaminationWidget->UpdateWidget(Index);
 	InventoryWidgetRef->SetVisibility(ESlateVisibility::Collapsed);
 	PlayerControllerRef->SetIsOpenInventory(false);
-
-	if(!ExaminationWidget->IsInViewport())
+	if (InventoryWidgetRef->InventoryDropDown != nullptr)
 	{
-		ExaminationWidget = CreateWidget<UExaminationWidget>(GetWorld(), ExaminationWidgetClass);
-		ExaminationWidget->AddToViewport(2);
-	}
+		InventoryWidgetRef->CloseDropDownMenu();
+	}	
 }
 

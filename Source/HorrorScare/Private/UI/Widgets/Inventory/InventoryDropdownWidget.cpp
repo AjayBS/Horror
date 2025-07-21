@@ -41,6 +41,24 @@ void UInventoryDropdownWidget::UpdateMenu(UHGInventorySlotWidget* InSlot)
 		{
 			UseSection->SetVisibility(ESlateVisibility::Collapsed);
 		}
+
+		if (ItemInstance->ItemData.bCanBeExamined)
+		{
+			ExamineSection->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		}
+		else
+		{
+			ExamineSection->SetVisibility(ESlateVisibility::Collapsed);
+		}
+
+		if (ItemInstance->ItemData.bCanBeDropped)
+		{
+			DropSection->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		}
+		else
+		{
+			DropSection->SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 }
 

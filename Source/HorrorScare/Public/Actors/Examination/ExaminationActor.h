@@ -12,7 +12,7 @@ class HORRORSCARE_API AExaminationActor : public AActor
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> ItemMesh;
 
 	// Sets default values for this actor's properties

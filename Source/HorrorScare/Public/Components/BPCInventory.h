@@ -53,4 +53,5 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	bool CheckForEmptySlot(int32& Index);
+	void CreateExaminationWidgetInstance();
 };

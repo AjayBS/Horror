@@ -63,7 +63,13 @@ void UHGInventorySlotWidget::OnSlotClicked()
 {
 	if (InventoryMenuRef)
 	{
-		InventoryMenuRef->OpenDropDownMenu(this);
+		FInventoryItems ItemInfo = PlayerRef->BPCInventoryComponent->GetItemDataAtIndex(Index);
+		if(!(!ItemInfo.Item->GetDefaultObject<AInventoryItem_Master>()->ItemData.bCanBeUsed &&
+			!ItemInfo.Item->GetDefaultObject<AInventoryItem_Master>()->ItemData.bCanBeExamined &&
+			!ItemInfo.Item->GetDefaultObject<AInventoryItem_Master>()->ItemData.bCanBeDropped))
+		{
+			InventoryMenuRef->OpenDropDownMenu(this);
+		}		
 	}
 	else
 	{
