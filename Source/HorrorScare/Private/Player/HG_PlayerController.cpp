@@ -75,6 +75,11 @@ void AHG_PlayerController::ToggleInventory()
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // Optional
 		InputMode.SetHideCursorDuringCapture(true); // Optional
 
+		if (ExaminationWidget->IsInViewport())
+		{
+			ExaminationWidget->RemoveFromParent();
+		}
+
 		SetInputMode(InputMode);
 	}
 	else
@@ -84,10 +89,6 @@ void AHG_PlayerController::ToggleInventory()
 		ResetIgnoreLookInput();
 		SetShowMouseCursor(false);
 		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
-		if (ExaminationWidget->IsInViewport())
-		{
-			ExaminationWidget->RemoveFromParent();
-		}
 
 		FInputModeGameOnly InputMode;
 		SetInputMode(InputMode);

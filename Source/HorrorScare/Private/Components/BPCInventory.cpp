@@ -319,7 +319,12 @@ void UBPCInventory::CreateExaminationWidget(int32 Index)
 {
 	ExaminationWidget->UpdateWidget(Index);
 	InventoryWidgetRef->SetVisibility(ESlateVisibility::Collapsed);
-	ExaminationWidget->AddToViewport(2);
 	PlayerControllerRef->SetIsOpenInventory(false);
+
+	if(!ExaminationWidget->IsInViewport())
+	{
+		ExaminationWidget = CreateWidget<UExaminationWidget>(GetWorld(), ExaminationWidgetClass);
+		ExaminationWidget->AddToViewport(2);
+	}
 }
 
