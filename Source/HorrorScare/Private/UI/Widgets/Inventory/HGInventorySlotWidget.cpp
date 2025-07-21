@@ -19,6 +19,8 @@ void UHGInventorySlotWidget::NativeConstruct()
 	if (SlotButton)
 	{
 		SlotButton->OnReleased.AddDynamic(this, &UHGInventorySlotWidget::OnSlotClicked);
+		SlotButton->OnHovered.AddDynamic(this, &UHGInventorySlotWidget::OnSlotHovered);
+		SlotButton->OnUnhovered.AddDynamic(this, &UHGInventorySlotWidget::OnSlotUnhovered);
 	}
 	else
 	{
@@ -67,4 +69,18 @@ void UHGInventorySlotWidget::OnSlotClicked()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("InventoryMenuRef is not set in HGInventorySlotWidget"));
 	}
+}
+
+void UHGInventorySlotWidget::OnSlotHovered()
+{
+	if (PlayerRef)
+	{
+		FInventoryItems ItemInfo = PlayerRef->BPCInventoryComponent->GetItemDataAtIndex(Index);
+		InventoryMenuRef->ShowItemInfo(ItemInfo.Item->GetDefaultObject<AInventoryItem_Master>()->ItemData);
+	}	
+}
+
+void UHGInventorySlotWidget::OnSlotUnhovered()
+{
+	InventoryMenuRef->HideItemInfo();
 }

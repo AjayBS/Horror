@@ -17,6 +17,7 @@ void UInventoryDropdownWidget::NativeConstruct()
 	PlayerRef = Cast<AL1_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	UseButton->OnReleased.AddDynamic(this, &UInventoryDropdownWidget::UseButtonPressed);
 	DropButton->OnReleased.AddDynamic(this, &UInventoryDropdownWidget::DropButtonPressed);
+	ExamineButton->OnReleased.AddDynamic(this, &UInventoryDropdownWidget::ExamineButtonPressed);
 }
 
 void UInventoryDropdownWidget::UpdateMenu(UHGInventorySlotWidget* InSlot)
@@ -56,5 +57,13 @@ void UInventoryDropdownWidget::DropButtonPressed()
 	if (PlayerRef)
 	{
 		PlayerRef->BPCInventoryComponent->DropItem(SlotIndex);
+	}
+}
+
+void UInventoryDropdownWidget::ExamineButtonPressed()
+{
+	if (PlayerRef)
+	{
+		PlayerRef->BPCInventoryComponent->CreateExaminationWidget(SlotIndex);
 	}
 }

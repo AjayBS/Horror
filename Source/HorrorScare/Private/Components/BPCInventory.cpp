@@ -8,6 +8,7 @@
 #include "Player/HG_PlayerController.h"
 #include "UI/Widgets/Inventory/HGInventoryGrid.h"
 #include "UI/Widgets/Inventory/HGInventorySlotWidget.h"
+#include "UI/Widgets/Inventory/ExaminationWidget.h"
 #include "UI/Widgets/Inventory/InventoryMenuWidget.h"
 
 void UBPCInventory::BeginPlay()
@@ -20,6 +21,10 @@ void UBPCInventory::BeginPlay()
 	{
 		InventoryItems.SetNum(PlayerControllerRef->InventorySlots);
 		InventoryWidgetRef = PlayerControllerRef->InventoryWidget;
+
+		ExaminationWidget = CreateWidget<UExaminationWidget>(GetWorld(), ExaminationWidgetClass);
+		ExaminationWidget->BPCInventoryRef = this;
+		PlayerControllerRef->ExaminationWidget = ExaminationWidget;
 	}	
 }
 
@@ -308,5 +313,13 @@ bool UBPCInventory::CheckForEmptySlot(int32& Index)
 	}
 
 	return false;
+}
+
+void UBPCInventory::CreateExaminationWidget(int32 Index)
+{
+	ExaminationWidget->UpdateWidget(Index);
+	InventoryWidgetRef->SetVisibility(ESlateVisibility::Collapsed);
+	ExaminationWidget->AddToViewport(2);
+	PlayerControllerRef->SetIsOpenInventory(false);
 }
 

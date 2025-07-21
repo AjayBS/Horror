@@ -5,6 +5,8 @@
 
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
 #include "Components/UniformGridSlot.h"
 #include "Components/UniformGridPanel.h"
 #include "Kismet/GameplayStatics.h"
@@ -60,6 +62,19 @@ void UInventoryMenuWidget::OpenDropDownMenu(UHGInventorySlotWidget* InSlot)
 		0.5f,
 		true
 	);
+}
+
+void UInventoryMenuWidget::ShowItemInfo(FItemData ItemData)
+{
+	ItemName->SetText(ItemData.ItemName);
+	Description->SetText(ItemData.Description);
+
+	ItemInfoBox->SetVisibility(ESlateVisibility::HitTestInvisible);
+}
+
+void UInventoryMenuWidget::HideItemInfo()
+{
+	ItemInfoBox->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UInventoryMenuWidget::CloseDropDownMenu()

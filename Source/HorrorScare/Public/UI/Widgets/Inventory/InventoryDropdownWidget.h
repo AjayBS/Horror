@@ -49,4 +49,7 @@ public:
 
 	UFUNCTION()
 	void DropButtonPressed();
+
+	UFUNCTION()
+	void ExamineButtonPressed();
 };

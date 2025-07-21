@@ -9,6 +9,7 @@
 
 class UInventoryMenuWidget;
 class AHG_PlayerController;
+class UExaminationWidget;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HORRORSCARE_API UBPCInventory : public UActorComponent
@@ -21,6 +22,12 @@ public:
 
 	TObjectPtr<UInventoryMenuWidget> InventoryWidgetRef;
 	TObjectPtr<AHG_PlayerController> PlayerControllerRef;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+	TObjectPtr<UExaminationWidget> ExaminationWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	TSubclassOf<UExaminationWidget> ExaminationWidgetClass;
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	bool AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amount, int32& Remainder);
@@ -40,6 +47,7 @@ public:
 
 	bool CheckForFreeSlot(TSubclassOf<AInventoryItem_Master> Item, int32& Remainder);
 	void SpawnDroppedItem(TSubclassOf<AInventoryItem_Master> Item, int32 Amount);
+	void CreateExaminationWidget(int32 Index);
 
 protected:
 	// Called when the game starts

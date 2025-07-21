@@ -35,9 +35,6 @@ public:
 	int32 Index;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
-	FItemData ItemData;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	float Amount;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Icons")
@@ -54,5 +51,11 @@ public:
 
 	UFUNCTION()
 	void OnSlotClicked();
+
+	UFUNCTION()
+	void OnSlotHovered();
+
+	UFUNCTION()
+	void OnSlotUnhovered();
 
 };

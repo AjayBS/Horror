@@ -8,6 +8,7 @@
 #include "HGWorldSubsystem.generated.h"
 
 class APickupActors;
+class AExaminationActor;
 
 USTRUCT(BlueprintType)
 struct FItemData
@@ -16,10 +17,13 @@ struct FItemData
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
-    FName ItemName;
+    FText ItemName;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
     UTexture2D* Icon;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    FText Description;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
     int32 MaxStackAmount;
@@ -31,7 +35,16 @@ public:
     bool bCanBeDropped = true;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    bool bCanBeExamined = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
     TSubclassOf<APickupActors> PickupActor;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    TObjectPtr<UStaticMesh> ExaminationMesh;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+    float ExaminationMeshOffset;
 };
 
 /**
@@ -41,5 +54,9 @@ UCLASS()
 class HORRORSCARE_API UHGWorldSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<AExaminationActor> ExaminationRef;
 	
 };

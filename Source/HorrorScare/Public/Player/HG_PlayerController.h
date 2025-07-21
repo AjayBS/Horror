@@ -11,6 +11,9 @@ class UInputMappingContext;
 class UInventoryMenuWidget;
 struct FInputActionValue;
 class AL1_Character;
+class UExaminationWidget;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReturnAction);
 
 /**
  * 
@@ -58,9 +61,16 @@ public:
 	UInputAction* InventoryAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* ReturnAction;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnReturnAction OnReturn;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UInventoryMenuWidget> InventoryWidgetClass;
 
 	TObjectPtr<UInventoryMenuWidget> InventoryWidget;
+	TObjectPtr<UExaminationWidget> ExaminationWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float LookSensitivity = 0.4f;
@@ -69,6 +79,7 @@ public:
 	int32 InventorySlots = 8;
 
 	void ToggleInventory();
+	void SetIsOpenInventory(bool bIsOpen) { bIsInventoryOpen = bIsOpen; }
 
 protected:
 	/** Called for looking input */
@@ -86,9 +97,10 @@ protected:
 	void StartSprintAction();
 	void StopSprint();
 
-	void Crouch();	
+	void Crouch();
+	void Return();
 
 private:
 	AL1_Character* CharacterRef;	
-	bool bIsPaused = false;
+	bool bIsInventoryOpen = false;
 };

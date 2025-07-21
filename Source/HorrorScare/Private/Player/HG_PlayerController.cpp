@@ -12,6 +12,7 @@
 #include "Player/BPC_Movement.h"
 #include "Player/L1_Character.h"
 #include "UI/Widgets/Inventory/InventoryMenuWidget.h"
+#include "UI/Widgets/Inventory/ExaminationWidget.h"
 
 void AHG_PlayerController::BeginPlay()
 {
@@ -50,6 +51,8 @@ void AHG_PlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AHG_PlayerController::Crouch);
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AHG_PlayerController::ToggleInventory);
+
+		EnhancedInputComponent->BindAction(ReturnAction, ETriggerEvent::Started, this, &AHG_PlayerController::Return);
 	}
 	else
 	{
@@ -59,9 +62,9 @@ void AHG_PlayerController::SetupInputComponent()
 
 void AHG_PlayerController::ToggleInventory()
 {
-	if (!bIsPaused)
+	if (!bIsInventoryOpen)
 	{
-		bIsPaused = true;
+		bIsInventoryOpen = true;
 		CharacterRef->GetCharacterMovement()->DisableMovement();
 		SetIgnoreLookInput(true);
 		SetShowMouseCursor(true);
@@ -76,11 +79,15 @@ void AHG_PlayerController::ToggleInventory()
 	}
 	else
 	{
-		bIsPaused = false;
+		bIsInventoryOpen = false;
 		CharacterRef->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 		ResetIgnoreLookInput();
 		SetShowMouseCursor(false);
 		InventoryWidget->SetVisibility(ESlateVisibility::Collapsed);
+		if (ExaminationWidget->IsInViewport())
+		{
+			ExaminationWidget->RemoveFromParent();
+		}
 
 		FInputModeGameOnly InputMode;
 		SetInputMode(InputMode);
@@ -208,5 +215,10 @@ void AHG_PlayerController::Crouch()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Character reference is null in CrouchAction!"));
 	}
+}
+
+void AHG_PlayerController::Return()
+{
+	OnReturn.Broadcast();
 }
 
