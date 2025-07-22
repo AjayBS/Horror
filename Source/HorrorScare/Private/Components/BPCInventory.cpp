@@ -337,3 +337,19 @@ void UBPCInventory::CreateExaminationWidget(int32 Index)
 	}	
 }
 
+void UBPCInventory::AddMoreSlots(int32 Amount)
+{
+	if (PlayerControllerRef)
+	{
+		PlayerControllerRef->InventorySlots += Amount;
+		InventoryWidgetRef->InventoryGrid->AddMoreSlots(Amount);
+
+		InventoryItems.SetNum(PlayerControllerRef->InventorySlots);
+		
+		for (int32 i = 0; i < InventoryWidgetRef->InventoryGrid->InventorySlotWidgets.Num(); i++)
+		{
+			InventoryWidgetRef->InventoryGrid->InventorySlotWidgets[i]->InitializeSlot(InventoryWidgetRef);
+		}
+	}
+}
+

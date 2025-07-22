@@ -31,4 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory")
 	int32 SlotsPerRow = 4;
+
+	void AddMoreSlots(int32 Amount);
+
+private:
+	void CreateInventorySlots(int32 Index);
 };

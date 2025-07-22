@@ -49,6 +49,9 @@ public:
 	void SpawnDroppedItem(TSubclassOf<AInventoryItem_Master> Item, int32 Amount);
 	void CreateExaminationWidget(int32 Index);
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void AddMoreSlots(int32 Amount);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

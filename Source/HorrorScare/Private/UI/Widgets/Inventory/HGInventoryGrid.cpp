@@ -18,21 +18,35 @@ void UHGInventoryGrid::NativePreConstruct()
 	{
 		for(int32 i = 0; i < HGPlayerController->InventorySlots; ++i)
 		{
-			UHGInventorySlotWidget* SlotWidget = CreateWidget<UHGInventorySlotWidget>(GetWorld(), InventorySlotWidgetClass);
-			if (SlotWidget)
-			{
-				SlotWidget->Index = i;
-				InventorySlotWidgets.Add(SlotWidget);
-				InventoryGridPanel->AddChildToUniformGrid(SlotWidget, i / SlotsPerRow, i % SlotsPerRow); 
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("HGInventoryGrid: Failed to create Inventory Slot Widget"));
-			}
+			CreateInventorySlots(i);
 		}
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("HGInventoryGrid: PlayerController is not of type AHG_PlayerController"));
+	}
+}
+
+void UHGInventoryGrid::AddMoreSlots(int32 Amount)
+{
+	int32 LocalAmountOfSlots = InventoryGridPanel->GetChildrenCount();
+	for (int32 i = 0; i < Amount; i++)
+	{
+		CreateInventorySlots(i + LocalAmountOfSlots);
+	}
+}
+
+void UHGInventoryGrid::CreateInventorySlots(int32 Index)
+{
+	UHGInventorySlotWidget* SlotWidget = CreateWidget<UHGInventorySlotWidget>(GetWorld(), InventorySlotWidgetClass);
+	if (SlotWidget)
+	{
+		SlotWidget->Index = Index;
+		InventorySlotWidgets.Add(SlotWidget);
+		InventoryGridPanel->AddChildToUniformGrid(SlotWidget, Index / SlotsPerRow, Index % SlotsPerRow);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HGInventoryGrid: Failed to create Inventory Slot Widget"));
 	}
 }
