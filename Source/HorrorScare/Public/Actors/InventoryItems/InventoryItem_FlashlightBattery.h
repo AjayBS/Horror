@@ -15,6 +15,7 @@ class HORRORSCARE_API AInventoryItem_FlashlightBattery : public AInventoryItem_M
 	GENERATED_BODY()
 
 public:
+	float BatteryAmount = 100.f; // Amount of battery to add when used
 	virtual void UseItem() override;
 	
 };

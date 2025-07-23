@@ -4,6 +4,7 @@
 #include "Player/L1_Character.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/BPCFlashlight.h"
 #include "Components/BPCInventory.h"
 #include "Components/SpotLightComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -27,11 +28,12 @@ AL1_Character::AL1_Character()
     CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
     CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
-    SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
-    SpotLightComponent->SetupAttachment(CameraBoom);
+    Flashlight = CreateDefaultSubobject<USpotLightComponent>(TEXT("Flashlight"));
+    Flashlight->SetupAttachment(CameraBoom);
 
     BPCMovementComponent = CreateDefaultSubobject<UBPC_Movement>(TEXT("MovementComponent"));
     BPCInventoryComponent = CreateDefaultSubobject<UBPCInventory>(TEXT("InventoryComponent"));
+    BPCFlashlightComponent = CreateDefaultSubobject<UBPCFlashlight>(TEXT("FlashlightComponent"));
     
 }
 
@@ -48,6 +50,15 @@ void AL1_Character::BeginPlay()
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("MovementComponent is not initialized!"));
+    }
+
+    if (BPCFlashlightComponent)
+    {
+        BPCFlashlightComponent->Initialize(this);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("BPCFlashlightComponent is not initialized!"));
     }
 }
 
@@ -90,14 +101,7 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
 
 void AL1_Character::ToggleFlashlight()
 {
-    if (SpotLightComponent->IsVisible())
-    {
-        SpotLightComponent->SetVisibility(false);
-	}
-    else
-    {
-        SpotLightComponent->SetVisibility(true);
-    }
+    BPCFlashlightComponent->ToggleFlashlight();
 }
 
 void AL1_Character::HeadBob()

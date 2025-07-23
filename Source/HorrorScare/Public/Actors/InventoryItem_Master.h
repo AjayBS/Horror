@@ -7,6 +7,8 @@
 #include "Managers/HGWorldSubsystem.h"
 #include "InventoryItem_Master.generated.h"
 
+class AL1_Character;
+
 USTRUCT(BlueprintType)
 struct FInventoryItems
 {
@@ -33,8 +35,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = true))
 	FItemData ItemData;
 
+	TObjectPtr<AL1_Character> PlayerRef;
+	bool bUseItemSuccess;
+
 	// Sets default values for this actor's properties
 	AInventoryItem_Master();
 	virtual void UseItem();
-
 };

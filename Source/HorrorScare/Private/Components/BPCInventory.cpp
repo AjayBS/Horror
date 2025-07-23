@@ -6,6 +6,7 @@
 #include "Actors/InventoryItem_Master.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/HG_PlayerController.h"
+#include "Player/L1_Character.h"
 #include "UI/Widgets/Inventory/HGInventoryGrid.h"
 #include "UI/Widgets/Inventory/HGInventorySlotWidget.h"
 #include "UI/Widgets/Inventory/ExaminationWidget.h"
@@ -34,6 +35,8 @@ bool UBPCInventory::AddItem(TSubclassOf<AInventoryItem_Master> Item, float Amoun
 	float LocalAmount = Amount;
 
 	AInventoryItem_Master* ItemInstance = Item.GetDefaultObject();
+	AL1_Character* PlayerChar = Cast<AL1_Character>(PlayerControllerRef->GetCharacter());
+	ItemInstance->PlayerRef = PlayerChar;
 	int32 LocalMaxStackAmount = ItemInstance->ItemData.MaxStackAmount;
 	int32 LocalIndex = -1;
 
@@ -187,8 +190,11 @@ void UBPCInventory::UseItem(int32 Index)
 			Item->UseItem();
 		}
 
-		RemoveItem(Index);
-		InventoryWidgetRef->CloseDropDownMenu();
+		if (Item->bUseItemSuccess)
+		{
+			RemoveItem(Index);
+			InventoryWidgetRef->CloseDropDownMenu();
+		}		
 	}	
 }
 

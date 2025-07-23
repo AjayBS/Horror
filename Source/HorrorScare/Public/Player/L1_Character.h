@@ -12,6 +12,7 @@ class UHGUserWidget;
 class USpotLightComponent;
 class UBPC_Movement;
 class UBPCInventory;
+class UBPCFlashlight;
 
 UCLASS()
 class HORRORSCARE_API AL1_Character : public ACharacter
@@ -35,7 +36,7 @@ public:
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light")
-	TObjectPtr<USpotLightComponent> SpotLightComponent;
+	TObjectPtr<USpotLightComponent> Flashlight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UHGUserWidget> HUDWidgetClass;
@@ -48,6 +49,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UBPCInventory> BPCInventoryComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UBPCFlashlight> BPCFlashlightComponent;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Interactables")
 	TObjectPtr<UObject> GrabbedObject;
