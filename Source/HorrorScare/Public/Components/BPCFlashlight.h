@@ -42,6 +42,7 @@ public:
 	void DepleteBatteryLife();
 
 	void AddBatteryLife(float Amount);
+	void SetIntensity();
 
 private:
 	TObjectPtr<AL1_Character> PlayerRef;	
