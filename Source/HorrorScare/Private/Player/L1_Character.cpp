@@ -28,6 +28,14 @@ AL1_Character::AL1_Character()
     CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
     CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
+    // Create first person mesh and attach to camera
+    FirstPersonMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonMesh"));
+    FirstPersonMesh->SetupAttachment(FollowCamera);
+
+    // Create gun mesh and attach to first person mesh
+    GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GunMesh"));
+    GunMesh->SetupAttachment(FirstPersonMesh);
+
     Flashlight = CreateDefaultSubobject<USpotLightComponent>(TEXT("Flashlight"));
     Flashlight->SetupAttachment(CameraBoom);
 
