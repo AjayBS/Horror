@@ -53,6 +53,8 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AHG_PlayerController::ToggleInventory);
 
 		EnhancedInputComponent->BindAction(ReturnAction, ETriggerEvent::Started, this, &AHG_PlayerController::Return);
+
+		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Triggered, this, &AHG_PlayerController::EquipWeapon);
 	}
 	else
 	{
@@ -221,5 +223,22 @@ void AHG_PlayerController::Crouch()
 void AHG_PlayerController::Return()
 {
 	OnReturn.Broadcast();
+}
+
+void AHG_PlayerController::EquipWeapon(const FInputActionValue& Value)
+{
+	if (CharacterRef)
+	{
+		float Val = Value.Get<float>();
+
+		if (Val > 0)
+		{
+			CharacterRef->EquipPreviousWeapon();
+		}
+		else if (Val < 0)
+		{
+			CharacterRef->EquipNextWeapon();
+		}		
+	}
 }
 

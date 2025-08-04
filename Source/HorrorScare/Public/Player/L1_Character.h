@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Managers/HGWorldSubsystem.h"
 #include "L1_Character.generated.h"
 
 class UCameraComponent;
@@ -62,6 +63,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Interactables")
 	TObjectPtr<UObject> GrabbedObject;
 
+	UPROPERTY(Category = Character, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EWeaponType CurrentWeapon = EWeaponType::Axe;
+
 	UFUNCTION(BlueprintCallable)
 	void LineTrace(float Length, bool bIsGrabbing);
 
@@ -86,6 +90,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_PlayCameraShake(bool bIsSprinting, float MappedValue);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_WeaponChanged();
+
+	void EquipNextWeapon();
+	void EquipPreviousWeapon();
 
 private:
 	void InitializeHUD();

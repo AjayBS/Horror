@@ -50,6 +50,16 @@ public:
     FRotator ExaminationMeshRotation;
 };
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+    Ak47        UMETA(DisplayName = "Ak47"),
+    USP         UMETA(DisplayName = "USP"),
+    Axe         UMETA(DisplayName = "Axe"),
+    FirstAid    UMETA(DisplayName = "FirstAid"),
+    MAX        UMETA(Hidden)
+};
+
 /**
  * 
  */

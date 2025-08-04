@@ -134,6 +134,32 @@ void AL1_Character::HeadBob()
     }
 }
 
+void AL1_Character::EquipNextWeapon()
+{
+    uint8 Next = static_cast<uint8>(CurrentWeapon) + 1;
+
+    if( Next >= static_cast<uint8>(EWeaponType::MAX))
+	{
+		Next = 0; // Loop back to the first weapon
+	}
+
+    CurrentWeapon = static_cast<EWeaponType>(Next);
+    BP_WeaponChanged();
+}
+
+void AL1_Character::EquipPreviousWeapon()
+{
+    int32 Previous = static_cast<int32>(CurrentWeapon) - 1;
+
+    if (Previous < 0)
+    {
+        Previous = static_cast<int32>(EWeaponType::MAX) - 1;  // Wrap to last valid value
+    }
+
+    CurrentWeapon = static_cast<EWeaponType>(Previous);
+    BP_WeaponChanged();
+}
+
 void AL1_Character::InitializeHUD()
 {
     HUDWidget = CreateWidget<UHGUserWidget>(GetWorld(), HUDWidgetClass);

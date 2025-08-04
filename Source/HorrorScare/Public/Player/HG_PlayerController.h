@@ -34,34 +34,37 @@ public:
 
 	// Sets default values for this controller's properties
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* LookAction;
+	TObjectPtr<UInputAction> LookAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* MoveAction;
+	TObjectPtr<UInputAction> MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* JumpAction;
+	TObjectPtr<UInputAction> JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* InteractAction;
+	TObjectPtr<UInputAction> InteractAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* LMBAction;
+	TObjectPtr<UInputAction> LMBAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* FlashlightAction;
+	TObjectPtr<UInputAction> FlashlightAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* SprintAction;
+	TObjectPtr<UInputAction> SprintAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* CrouchAction;
+	TObjectPtr<UInputAction> CrouchAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* InventoryAction;
+	TObjectPtr<UInputAction> InventoryAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* ReturnAction;
+	TObjectPtr<UInputAction> ReturnAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> EquipWeaponAction;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnReturnAction OnReturn;
@@ -99,6 +102,8 @@ protected:
 
 	void Crouch();
 	void Return();
+
+	void EquipWeapon(const FInputActionValue& Value);
 
 private:
 	AL1_Character* CharacterRef;	
