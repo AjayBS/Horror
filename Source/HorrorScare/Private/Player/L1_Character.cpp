@@ -113,6 +113,15 @@ void AL1_Character::LineTraceForShooting()
     switch (CurrentWeapon)
     {   
     case EWeaponType::Ak47:
+        BPCWeaponSystemComponent->ShootAk47();
+
+        GetWorld()->GetTimerManager().SetTimer(
+            Ak47TimerHandle,
+            this,
+            &AL1_Character::AutoShootAk47,
+            BPCWeaponSystemComponent->GetAk47ShootRate(),
+            true
+        );
         break;
     case EWeaponType::USP:
         BPCWeaponSystemComponent->ShootUSP();
@@ -127,6 +136,11 @@ void AL1_Character::LineTraceForShooting()
         break;
     }
     
+}
+
+void AL1_Character::StopShooting()
+{
+    GetWorld()->GetTimerManager().ClearTimer(Ak47TimerHandle);
 }
 
 void AL1_Character::ToggleFlashlight()
@@ -189,4 +203,9 @@ void AL1_Character::InitializeHUD()
 	{
 		HUDWidget->AddToViewport();
 	}
+}
+
+void AL1_Character::AutoShootAk47()
+{
+    BPCWeaponSystemComponent->ShootAk47();
 }

@@ -56,6 +56,7 @@ void AHG_PlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Triggered, this, &AHG_PlayerController::EquipWeapon);
 		EnhancedInputComponent->BindAction(ShootWeaponAction, ETriggerEvent::Started, this, &AHG_PlayerController::ShootWeapon);
+		EnhancedInputComponent->BindAction(ShootWeaponAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopShootWeapon);
 	}
 	else
 	{
@@ -248,6 +249,14 @@ void AHG_PlayerController::ShootWeapon()
 	if (CharacterRef)
 	{
 		CharacterRef->LineTraceForShooting();
+	}
+}
+
+void AHG_PlayerController::StopShootWeapon()
+{
+	if (CharacterRef)
+	{
+		CharacterRef->StopShooting();
 	}
 }
 

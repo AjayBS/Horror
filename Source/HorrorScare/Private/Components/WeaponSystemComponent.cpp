@@ -26,28 +26,30 @@ void UWeaponSystemComponent::ShootUSP()
 		UE_LOG(LogTemp, Warning, TEXT("UWeaponSystemComponent::ShootUSP - PlayerCharacter is null"));
 		return;
 	}
-    FVector Start;
-    FVector End;
-    FHitResult HitResult;
 
-    FRotator PlayerRot;
-    PlayerCharacter->GetController()->GetPlayerViewPoint(Start, PlayerRot);
-    End = Start + PlayerRot.Vector() * USP_Range;
+    WeaponLineTrace(PlayerCharacter);
+    PlayFireMontage(PlayerCharacter);
+}
 
-    // Line trace parameters
-    FCollisionQueryParams TraceParams;
-    TraceParams.AddIgnoredActor(PlayerCharacter); // Ignore self
+void UWeaponSystemComponent::ShootAk47()
+{
+    Ak47_CurrentMagAmmo--;
+    if (Ak47_CurrentMagAmmo < 0)
+    {
+        Ak47_CurrentMagAmmo = 0;
+        UE_LOG(LogTemp, Verbose, TEXT("UWeaponSystemComponent::ShootAk47 - No ammo in magazine"));
+        return;
+    }
 
-    // Perform the line trace
-    bool bHit = GetWorld()->LineTraceSingleByChannel(
-        HitResult,
-        Start,
-        End,
-        ECC_Visibility,
-        TraceParams
-    );
-
-    PlayUSPFireMontage(PlayerCharacter);
+    AL1_Character* PlayerCharacter = Cast<AL1_Character>(GetOwner());
+    if (!PlayerCharacter)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("UWeaponSystemComponent::ShootUSP - PlayerCharacter is null"));
+        return;
+    }
+   
+    WeaponLineTrace(PlayerCharacter);
+    PlayFireMontage(PlayerCharacter);
 }
 
 
@@ -58,20 +60,73 @@ void UWeaponSystemComponent::BeginPlay()
 
 }
 
-void UWeaponSystemComponent::PlayUSPFireMontage(AL1_Character* CharacterRef)
+void UWeaponSystemComponent::WeaponLineTrace(AL1_Character* CharacterRef)
 {
-    if(!USPCharacterFireMontage && !USPGunFireAnimation) return;
+    int32 Range = 0;
+    switch (CharacterRef->CurrentWeapon)
+    {
+    case EWeaponType::USP:
+        Range = USP_Range;
+        break;
+    case EWeaponType::Ak47:
+        Range = Ak47_Range;
+        break;
+    default:
+        break;
+    }
+
+    FVector Start;
+    FVector End;
+    FHitResult HitResult;
+
+    FRotator PlayerRot;
+    CharacterRef->GetController()->GetPlayerViewPoint(Start, PlayerRot);
+    End = Start + PlayerRot.Vector() * Range;
+
+    // Line trace parameters
+    FCollisionQueryParams TraceParams;
+    TraceParams.AddIgnoredActor(CharacterRef); // Ignore self
+
+    // Perform the line trace
+    bool bHit = GetWorld()->LineTraceSingleByChannel(
+        HitResult,
+        Start,
+        End,
+        ECC_Visibility,
+        TraceParams
+    );
+}
+
+void UWeaponSystemComponent::PlayFireMontage(AL1_Character* CharacterRef)
+{
+    UAnimMontage* CharacterFireMontage = nullptr;
+    UAnimationAsset* GunFireAnimation = nullptr;
+    switch (CharacterRef->CurrentWeapon)
+    { 
+    case EWeaponType::USP:
+		CharacterFireMontage = USPCharacterFireMontage;
+		GunFireAnimation = USPGunFireAnimation;
+		break;
+    case EWeaponType::Ak47:
+        CharacterFireMontage = Ak47CharacterFireMontage;
+        GunFireAnimation = Ak47GunFireAnimation;
+		break;
+    default:
+        break;
+    }
+
+    if(!CharacterFireMontage && !GunFireAnimation) return;
 
     UAnimInstance* FPSAnimInstance = CharacterRef->FirstPersonMesh->GetAnimInstance();
-    if (FPSAnimInstance && !FPSAnimInstance->Montage_IsPlaying(USPCharacterFireMontage))
+    if (FPSAnimInstance && !FPSAnimInstance->Montage_IsPlaying(CharacterFireMontage))
     {
-        FPSAnimInstance->Montage_Play(USPCharacterFireMontage);
+        FPSAnimInstance->Montage_Play(CharacterFireMontage);
     }
 
     UAnimInstance* GunAnimInstance = CharacterRef->GunMesh->GetAnimInstance();
     if (CharacterRef->GunMesh)
     {
-        CharacterRef->GunMesh->PlayAnimation(USPGunFireAnimation, false);
+        CharacterRef->GunMesh->PlayAnimation(GunFireAnimation, false);
     }
 }
 

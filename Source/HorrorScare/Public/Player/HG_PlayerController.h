@@ -108,6 +108,7 @@ protected:
 
 	void EquipWeapon(const FInputActionValue& Value);
 	void ShootWeapon();
+	void StopShootWeapon();
 
 private:
 	AL1_Character* CharacterRef;	

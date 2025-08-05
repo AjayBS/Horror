@@ -75,6 +75,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LineTraceForShooting();
+	void StopShooting();
 
 	void ToggleFlashlight();
 
@@ -105,5 +106,9 @@ public:
 	void EquipPreviousWeapon();
 
 private:
+	FTimerHandle Ak47TimerHandle;
 	void InitializeHUD();
+
+	UFUNCTION()
+	void AutoShootAk47();
 };

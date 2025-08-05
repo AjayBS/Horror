@@ -17,25 +17,48 @@ public:
 	// Sets default values for this component's properties
 	UWeaponSystemComponent();
 	void ShootUSP();
+	void ShootAk47();
+	float GetAk47ShootRate() const { return Ak47_ShootRate; }
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="USP")
-	int32 USP_TotalAmmo; // Total ammo available
+	int32 USP_TotalAmmo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "USP")
-	int32 USP_CurrentMagAmmo; // Current ammo in the USP
+	int32 USP_CurrentMagAmmo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "USP")
-	int32 USP_MaxMagAmmo; // Maximum ammo in the USP magazine
+	int32 USP_MaxMagAmmo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "USP")
-	int32 USP_NeededAmmo; // Ammo needed to reload the USP
+	int32 USP_NeededAmmo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "USP")
 	int32 USP_Range;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "USP")
-	int32 USP_Damage; // Damage dealt by the USP
+	int32 USP_Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	int32 Ak47_TotalAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	int32 Ak47_CurrentMagAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	int32 Ak47_MaxMagAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	int32 Ak47_NeededAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	int32 Ak47_Range;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	int32 Ak47_Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
+	float Ak47_ShootRate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimMontage> USPCharacterFireMontage;
@@ -43,11 +66,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimationAsset> USPGunFireAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimMontage> Ak47CharacterFireMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimationAsset> Ak47GunFireAnimation;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-	void PlayUSPFireMontage(AL1_Character* CharacterRef);
+	void WeaponLineTrace(AL1_Character* CharacterRef);
+	void PlayFireMontage(AL1_Character* CharacterRef);
 
 
 };
