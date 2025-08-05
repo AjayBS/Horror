@@ -14,6 +14,7 @@ class USpotLightComponent;
 class UBPC_Movement;
 class UBPCInventory;
 class UBPCFlashlight;
+class UWeaponSystemComponent;
 
 UCLASS()
 class HORRORSCARE_API AL1_Character : public ACharacter
@@ -60,6 +61,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UBPCFlashlight> BPCFlashlightComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UWeaponSystemComponent> BPCWeaponSystemComponent;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Interactables")
 	TObjectPtr<UObject> GrabbedObject;
 
@@ -68,6 +72,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LineTrace(float Length, bool bIsGrabbing);
+
+	UFUNCTION(BlueprintCallable)
+	void LineTraceForShooting();
 
 	void ToggleFlashlight();
 

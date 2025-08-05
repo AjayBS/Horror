@@ -7,6 +7,7 @@
 #include "Components/BPCFlashlight.h"
 #include "Components/BPCInventory.h"
 #include "Components/SpotLightComponent.h"
+#include "Components/WeaponSystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/BPC_Movement.h"
@@ -42,7 +43,7 @@ AL1_Character::AL1_Character()
     BPCMovementComponent = CreateDefaultSubobject<UBPC_Movement>(TEXT("MovementComponent"));
     BPCInventoryComponent = CreateDefaultSubobject<UBPCInventory>(TEXT("InventoryComponent"));
     BPCFlashlightComponent = CreateDefaultSubobject<UBPCFlashlight>(TEXT("FlashlightComponent"));
-    
+    BPCWeaponSystemComponent = CreateDefaultSubobject<UWeaponSystemComponent>(TEXT("WeaponSystemComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -105,6 +106,27 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
             BP_GrabActor(HitResult);
         }
     }
+}
+
+void AL1_Character::LineTraceForShooting()
+{
+    switch (CurrentWeapon)
+    {   
+    case EWeaponType::Ak47:
+        break;
+    case EWeaponType::USP:
+        BPCWeaponSystemComponent->ShootUSP();
+        break;
+    case EWeaponType::Axe:
+        break;
+    case EWeaponType::FirstAid:
+        break;
+    case EWeaponType::MAX:
+        break;
+    default:
+        break;
+    }
+    
 }
 
 void AL1_Character::ToggleFlashlight()
