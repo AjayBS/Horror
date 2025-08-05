@@ -77,6 +77,8 @@ public:
 	void LineTraceForShooting();
 	void StopShooting();
 
+	void ReloadWeapon();
+
 	void ToggleFlashlight();
 
 	void HeadBob();
@@ -106,9 +108,6 @@ public:
 	void EquipPreviousWeapon();
 
 private:
-	FTimerHandle Ak47TimerHandle;
 	void InitializeHUD();
 
-	UFUNCTION()
-	void AutoShootAk47();
 };

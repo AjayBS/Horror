@@ -16,12 +16,12 @@ class HORRORSCARE_API UWeaponSystemComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UWeaponSystemComponent();
-	void ShootUSP();
-	void ShootAk47();
-	void AxeAttack();
-	void FirstAidInjection();
+	void ShootWeapon();
+	void StopShooting();
+	void ReloadWeapon();
 	float GetAk47ShootRate() const { return Ak47_ShootRate; }
 	bool CanEquip() const { return !bAttacking; }
+	bool IsReloading() const { return bIsReloading; }
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="USP")
@@ -70,6 +70,7 @@ protected:
 	int32 FirstAidTotal = 3;
 
 	bool bAttacking = false;
+	bool bIsReloading = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimMontage> USPCharacterFireMontage;
@@ -92,16 +93,30 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimationAsset> FirstAidGunInjectionAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimMontage> Ak47CharacterReloadMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimationAsset> Ak47GunReloadAnimation;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-
 	TObjectPtr<AL1_Character> CharacterRef;
 	TObjectPtr<UAnimInstance> FPSAnimInstance;
+	FTimerHandle Ak47TimerHandle;
 
+	void ShootUSP();
+
+	UFUNCTION()
+	void ShootAk47();
+
+	void AxeAttack();
+	void FirstAidInjection();
 	void WeaponLineTrace();
 	void PlayFireMontage();
+	void PlayReloadMontage();
 
 	UFUNCTION()
 	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);

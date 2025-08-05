@@ -57,6 +57,8 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Triggered, this, &AHG_PlayerController::EquipWeapon);
 		EnhancedInputComponent->BindAction(ShootWeaponAction, ETriggerEvent::Started, this, &AHG_PlayerController::ShootWeapon);
 		EnhancedInputComponent->BindAction(ShootWeaponAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopShootWeapon);
+
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &AHG_PlayerController::ReloadWeapon);
 	}
 	else
 	{
@@ -257,6 +259,14 @@ void AHG_PlayerController::StopShootWeapon()
 	if (CharacterRef)
 	{
 		CharacterRef->StopShooting();
+	}
+}
+
+void AHG_PlayerController::ReloadWeapon()
+{
+	if (CharacterRef)
+	{
+		CharacterRef->ReloadWeapon();
 	}
 }
 

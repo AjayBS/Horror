@@ -110,38 +110,20 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
 
 void AL1_Character::LineTraceForShooting()
 {
-    switch (CurrentWeapon)
-    {
-    case EWeaponType::Ak47:
-        BPCWeaponSystemComponent->ShootAk47();
-
-        GetWorld()->GetTimerManager().SetTimer(
-            Ak47TimerHandle,
-            this,
-            &AL1_Character::AutoShootAk47,
-            BPCWeaponSystemComponent->GetAk47ShootRate(),
-            true
-        );
-        break;
-    case EWeaponType::USP:
-        BPCWeaponSystemComponent->ShootUSP();
-        break;
-    case EWeaponType::Axe:
-        BPCWeaponSystemComponent->AxeAttack();
-        break;
-    case EWeaponType::FirstAid:
-        BPCWeaponSystemComponent->FirstAidInjection();
-        break;
-    case EWeaponType::MAX:
-        break;
-    default:
-        break;
-    }
+    BPCWeaponSystemComponent->ShootWeapon();
 }
 
 void AL1_Character::StopShooting()
 {
-    GetWorld()->GetTimerManager().ClearTimer(Ak47TimerHandle);
+    BPCWeaponSystemComponent->StopShooting();
+}
+
+void AL1_Character::ReloadWeapon()
+{
+    if (!BPCWeaponSystemComponent->IsReloading())
+    {
+        BPCWeaponSystemComponent->ReloadWeapon();
+    }   
 }
 
 void AL1_Character::ToggleFlashlight()
@@ -173,7 +155,7 @@ void AL1_Character::HeadBob()
 
 void AL1_Character::EquipNextWeapon()
 {
-    if (BPCWeaponSystemComponent->CanEquip())
+    if (BPCWeaponSystemComponent->CanEquip() && !BPCWeaponSystemComponent->IsReloading())
     {
         uint8 Next = static_cast<uint8>(CurrentWeapon) + 1;
 
@@ -189,7 +171,7 @@ void AL1_Character::EquipNextWeapon()
 
 void AL1_Character::EquipPreviousWeapon()
 {
-    if (BPCWeaponSystemComponent->CanEquip())
+    if (BPCWeaponSystemComponent->CanEquip() && !BPCWeaponSystemComponent->IsReloading())
     {
         int32 Previous = static_cast<int32>(CurrentWeapon) - 1;
 
@@ -210,9 +192,4 @@ void AL1_Character::InitializeHUD()
 	{
 		HUDWidget->AddToViewport();
 	}
-}
-
-void AL1_Character::AutoShootAk47()
-{
-    BPCWeaponSystemComponent->ShootAk47();
 }

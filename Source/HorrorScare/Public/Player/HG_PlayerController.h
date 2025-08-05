@@ -69,6 +69,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ShootWeaponAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> ReloadAction;
+
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnReturnAction OnReturn;
 
@@ -109,6 +112,7 @@ protected:
 	void EquipWeapon(const FInputActionValue& Value);
 	void ShootWeapon();
 	void StopShootWeapon();
+	void ReloadWeapon();
 
 private:
 	AL1_Character* CharacterRef;	

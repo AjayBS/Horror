@@ -9,6 +9,42 @@ UWeaponSystemComponent::UWeaponSystemComponent()
 
 }
 
+void UWeaponSystemComponent::ShootWeapon()
+{
+    switch (CharacterRef->CurrentWeapon)
+    {
+    case EWeaponType::Ak47:
+        ShootAk47();
+
+        GetWorld()->GetTimerManager().SetTimer(
+            Ak47TimerHandle,
+            this,
+            &UWeaponSystemComponent::ShootAk47,
+            GetAk47ShootRate(),
+            true
+        );
+        break;
+    case EWeaponType::USP:
+        ShootUSP();
+        break;
+    case EWeaponType::Axe:
+        AxeAttack();
+        break;
+    case EWeaponType::FirstAid:
+        FirstAidInjection();
+        break;
+    case EWeaponType::MAX:
+        break;
+    default:
+        break;
+    }
+}
+
+void UWeaponSystemComponent::StopShooting()
+{
+    GetWorld()->GetTimerManager().ClearTimer(Ak47TimerHandle);
+}
+
 void UWeaponSystemComponent::ShootUSP()
 {
     USP_CurrentMagAmmo--;
@@ -56,6 +92,27 @@ void UWeaponSystemComponent::FirstAidInjection()
         Health = 100.f;
         FirstAidTotal--;
     }
+}
+
+void UWeaponSystemComponent::ReloadWeapon()
+{
+    switch (CharacterRef->CurrentWeapon)
+    {
+    case EWeaponType::Ak47:
+        bIsReloading = true;
+        PlayReloadMontage();
+        break;
+    case EWeaponType::USP:
+        break;
+    case EWeaponType::Axe:
+        break;
+    case EWeaponType::FirstAid:
+        break;
+    case EWeaponType::MAX:
+        break;
+    default:
+        break;
+    }   
 }
 
 // Called when the game starts
@@ -154,8 +211,40 @@ void UWeaponSystemComponent::PlayFireMontage()
     }
 }
 
+void UWeaponSystemComponent::PlayReloadMontage()
+{
+    UAnimMontage* CharacterReloadMontage = nullptr;
+    UAnimationAsset* GunReloadAnimation = nullptr;
+    switch (CharacterRef->CurrentWeapon)
+    {
+    case EWeaponType::USP:
+        break;
+    case EWeaponType::Ak47:
+        CharacterReloadMontage = Ak47CharacterReloadMontage;
+        GunReloadAnimation = Ak47GunReloadAnimation;
+        break;
+    case EWeaponType::Axe:
+        break;
+    case EWeaponType::FirstAid:
+        break;
+    default:
+        break;
+    }
+
+    if (FPSAnimInstance && CharacterReloadMontage && !FPSAnimInstance->Montage_IsPlaying(CharacterReloadMontage))
+    {
+        FPSAnimInstance->Montage_Play(CharacterReloadMontage);
+    }
+
+    if (CharacterRef->GunMesh && GunReloadAnimation)
+    {
+        CharacterRef->GunMesh->PlayAnimation(GunReloadAnimation, false);
+    }
+}
+
 void UWeaponSystemComponent::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
     bAttacking = false;
+    bIsReloading = false;
 }
 
