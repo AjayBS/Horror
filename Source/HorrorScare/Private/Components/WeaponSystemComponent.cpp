@@ -19,16 +19,8 @@ void UWeaponSystemComponent::ShootUSP()
 		return;
 	}
 
-
-    AL1_Character* PlayerCharacter = Cast<AL1_Character>(GetOwner());
-    if(!PlayerCharacter)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UWeaponSystemComponent::ShootUSP - PlayerCharacter is null"));
-		return;
-	}
-
-    WeaponLineTrace(PlayerCharacter);
-    PlayFireMontage(PlayerCharacter);
+    WeaponLineTrace();
+    PlayFireMontage();
 }
 
 void UWeaponSystemComponent::ShootAk47()
@@ -40,16 +32,19 @@ void UWeaponSystemComponent::ShootAk47()
         UE_LOG(LogTemp, Verbose, TEXT("UWeaponSystemComponent::ShootAk47 - No ammo in magazine"));
         return;
     }
-
-    AL1_Character* PlayerCharacter = Cast<AL1_Character>(GetOwner());
-    if (!PlayerCharacter)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("UWeaponSystemComponent::ShootUSP - PlayerCharacter is null"));
-        return;
-    }
    
-    WeaponLineTrace(PlayerCharacter);
-    PlayFireMontage(PlayerCharacter);
+    WeaponLineTrace();
+    PlayFireMontage();
+}
+
+void UWeaponSystemComponent::AxeAttack()
+{
+    if (!bAttacking)
+    {
+        bAttacking = true;
+        WeaponLineTrace();
+        PlayFireMontage();
+    }    
 }
 
 
@@ -58,11 +53,24 @@ void UWeaponSystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+    CharacterRef = Cast<AL1_Character>(GetOwner());
+    FPSAnimInstance = CharacterRef->FirstPersonMesh->GetAnimInstance();
+
+    if (FPSAnimInstance)
+    {
+        FPSAnimInstance->OnMontageEnded.AddDynamic(this, &UWeaponSystemComponent::OnMontageEnded);
+    }
 }
 
-void UWeaponSystemComponent::WeaponLineTrace(AL1_Character* CharacterRef)
+void UWeaponSystemComponent::WeaponLineTrace()
 {
-    int32 Range = 0;
+    if (!CharacterRef)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("UWeaponSystemComponent::WeaponLineTrace - CharacterRef is null"));
+        return;
+    }
+
+    float Range = 0.f;
     switch (CharacterRef->CurrentWeapon)
     {
     case EWeaponType::USP:
@@ -71,6 +79,9 @@ void UWeaponSystemComponent::WeaponLineTrace(AL1_Character* CharacterRef)
     case EWeaponType::Ak47:
         Range = Ak47_Range;
         break;
+    case EWeaponType::Axe:
+		Range = 300.f; 
+		break;
     default:
         break;
     }
@@ -97,7 +108,7 @@ void UWeaponSystemComponent::WeaponLineTrace(AL1_Character* CharacterRef)
     );
 }
 
-void UWeaponSystemComponent::PlayFireMontage(AL1_Character* CharacterRef)
+void UWeaponSystemComponent::PlayFireMontage()
 {
     UAnimMontage* CharacterFireMontage = nullptr;
     UAnimationAsset* GunFireAnimation = nullptr;
@@ -111,22 +122,26 @@ void UWeaponSystemComponent::PlayFireMontage(AL1_Character* CharacterRef)
         CharacterFireMontage = Ak47CharacterFireMontage;
         GunFireAnimation = Ak47GunFireAnimation;
 		break;
+    case EWeaponType::Axe:
+		CharacterFireMontage = AxeCharacterFireMontage;
+		break;
     default:
         break;
     }
 
-    if(!CharacterFireMontage && !GunFireAnimation) return;
-
-    UAnimInstance* FPSAnimInstance = CharacterRef->FirstPersonMesh->GetAnimInstance();
-    if (FPSAnimInstance && !FPSAnimInstance->Montage_IsPlaying(CharacterFireMontage))
+    if (FPSAnimInstance && CharacterFireMontage && !FPSAnimInstance->Montage_IsPlaying(CharacterFireMontage))
     {
         FPSAnimInstance->Montage_Play(CharacterFireMontage);
     }
 
-    UAnimInstance* GunAnimInstance = CharacterRef->GunMesh->GetAnimInstance();
-    if (CharacterRef->GunMesh)
+    if (CharacterRef->GunMesh && GunFireAnimation)
     {
         CharacterRef->GunMesh->PlayAnimation(GunFireAnimation, false);
     }
+}
+
+void UWeaponSystemComponent::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+    bAttacking = false;
 }
 

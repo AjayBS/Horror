@@ -18,7 +18,9 @@ public:
 	UWeaponSystemComponent();
 	void ShootUSP();
 	void ShootAk47();
+	void AxeAttack();
 	float GetAk47ShootRate() const { return Ak47_ShootRate; }
+	bool CanEquip() const { return !bAttacking; }
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="USP")
@@ -60,6 +62,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
 	float Ak47_ShootRate;
 
+	bool bAttacking = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimMontage> USPCharacterFireMontage;
 
@@ -72,12 +76,23 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimationAsset> Ak47GunFireAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimMontage> AxeCharacterFireMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimMontage> AxeGunFireMontage;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-	void WeaponLineTrace(AL1_Character* CharacterRef);
-	void PlayFireMontage(AL1_Character* CharacterRef);
 
+	TObjectPtr<AL1_Character> CharacterRef;
+	TObjectPtr<UAnimInstance> FPSAnimInstance;
 
+	void WeaponLineTrace();
+	void PlayFireMontage();
+
+	UFUNCTION()
+	void OnMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 };
