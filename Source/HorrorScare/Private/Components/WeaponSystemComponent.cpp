@@ -47,6 +47,16 @@ void UWeaponSystemComponent::AxeAttack()
     }    
 }
 
+void UWeaponSystemComponent::FirstAidInjection()
+{
+    if (!bAttacking && FirstAidTotal > 0)
+    {
+        bAttacking = true;
+        PlayFireMontage();  
+        Health = 100.f;
+        FirstAidTotal--;
+    }
+}
 
 // Called when the game starts
 void UWeaponSystemComponent::BeginPlay()
@@ -124,6 +134,10 @@ void UWeaponSystemComponent::PlayFireMontage()
 		break;
     case EWeaponType::Axe:
 		CharacterFireMontage = AxeCharacterFireMontage;
+		break;
+    case EWeaponType::FirstAid:
+		CharacterFireMontage = FirstAidCharacterInjectionMontage;
+		GunFireAnimation = FirstAidGunInjectionAnimation;
 		break;
     default:
         break;

@@ -130,6 +130,7 @@ void AL1_Character::LineTraceForShooting()
         BPCWeaponSystemComponent->AxeAttack();
         break;
     case EWeaponType::FirstAid:
+        BPCWeaponSystemComponent->FirstAidInjection();
         break;
     case EWeaponType::MAX:
         break;

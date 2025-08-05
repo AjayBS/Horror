@@ -19,6 +19,7 @@ public:
 	void ShootUSP();
 	void ShootAk47();
 	void AxeAttack();
+	void FirstAidInjection();
 	float GetAk47ShootRate() const { return Ak47_ShootRate; }
 	bool CanEquip() const { return !bAttacking; }
 
@@ -62,6 +63,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ak47")
 	float Ak47_ShootRate;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FirstAid")
+	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FirstAid")
+	int32 FirstAidTotal = 3;
+
 	bool bAttacking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
@@ -80,7 +87,10 @@ protected:
 	TObjectPtr<UAnimMontage> AxeCharacterFireMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
-	TObjectPtr<UAnimMontage> AxeGunFireMontage;
+	TObjectPtr<UAnimMontage> FirstAidCharacterInjectionMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimationAsset> FirstAidGunInjectionAnimation;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
