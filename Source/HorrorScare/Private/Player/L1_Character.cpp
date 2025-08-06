@@ -110,7 +110,10 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
 
 void AL1_Character::LineTraceForShooting()
 {
-    BPCWeaponSystemComponent->ShootWeapon();
+    if (!BPCWeaponSystemComponent->IsReloading())
+    {
+        BPCWeaponSystemComponent->ShootWeapon();
+    }    
 }
 
 void AL1_Character::StopShooting()

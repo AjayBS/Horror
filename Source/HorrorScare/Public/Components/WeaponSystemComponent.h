@@ -114,6 +114,9 @@ private:
 
 	void AxeAttack();
 	void FirstAidInjection();
+
+	void ReloadAk47();
+
 	void WeaponLineTrace();
 	void PlayFireMontage();
 	void PlayReloadMontage();

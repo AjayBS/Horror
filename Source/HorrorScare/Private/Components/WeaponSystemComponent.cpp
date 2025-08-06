@@ -94,13 +94,33 @@ void UWeaponSystemComponent::FirstAidInjection()
     }
 }
 
+void UWeaponSystemComponent::ReloadAk47()
+{
+    if (Ak47_CurrentMagAmmo < Ak47_MaxMagAmmo && Ak47_TotalAmmo > 0)
+    {
+        bIsReloading = true;
+        StopShooting();
+        PlayReloadMontage();
+        Ak47_NeededAmmo = Ak47_MaxMagAmmo - Ak47_CurrentMagAmmo;
+        if (Ak47_NeededAmmo < Ak47_TotalAmmo)
+        {
+            Ak47_CurrentMagAmmo += Ak47_NeededAmmo;
+            Ak47_TotalAmmo -= Ak47_NeededAmmo;
+        }
+        else
+		{
+			Ak47_CurrentMagAmmo += Ak47_TotalAmmo;
+			Ak47_TotalAmmo = 0;
+		}
+    }    
+}
+
 void UWeaponSystemComponent::ReloadWeapon()
 {
     switch (CharacterRef->CurrentWeapon)
     {
     case EWeaponType::Ak47:
-        bIsReloading = true;
-        PlayReloadMontage();
+        ReloadAk47();
         break;
     case EWeaponType::USP:
         break;
@@ -244,7 +264,16 @@ void UWeaponSystemComponent::PlayReloadMontage()
 
 void UWeaponSystemComponent::OnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-    bAttacking = false;
-    bIsReloading = false;
+    if(Montage == USPCharacterFireMontage ||
+	   Montage == Ak47CharacterFireMontage ||
+	   Montage == AxeCharacterFireMontage ||
+	   Montage == FirstAidCharacterInjectionMontage)
+	{
+		bAttacking = false;
+	}
+	else if (Montage == Ak47CharacterReloadMontage)
+	{
+		bIsReloading = false;
+	}
 }
 
