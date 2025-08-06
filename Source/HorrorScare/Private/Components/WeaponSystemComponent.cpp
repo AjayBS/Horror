@@ -115,6 +115,27 @@ void UWeaponSystemComponent::ReloadAk47()
     }    
 }
 
+void UWeaponSystemComponent::ReloadUSP()
+{
+    if (USP_CurrentMagAmmo < USP_MaxMagAmmo && USP_TotalAmmo > 0)
+    {
+        bIsReloading = true;
+        StopShooting();
+        PlayReloadMontage();
+        USP_NeededAmmo = USP_MaxMagAmmo - USP_CurrentMagAmmo;
+        if (USP_NeededAmmo < USP_TotalAmmo)
+        {
+            USP_CurrentMagAmmo += USP_NeededAmmo;
+            USP_TotalAmmo -= USP_NeededAmmo;
+        }
+        else
+        {
+            USP_CurrentMagAmmo += USP_TotalAmmo;
+            USP_TotalAmmo = 0;
+        }
+    }
+}
+
 void UWeaponSystemComponent::ReloadWeapon()
 {
     switch (CharacterRef->CurrentWeapon)
@@ -123,6 +144,7 @@ void UWeaponSystemComponent::ReloadWeapon()
         ReloadAk47();
         break;
     case EWeaponType::USP:
+        ReloadUSP();
         break;
     case EWeaponType::Axe:
         break;
@@ -238,6 +260,8 @@ void UWeaponSystemComponent::PlayReloadMontage()
     switch (CharacterRef->CurrentWeapon)
     {
     case EWeaponType::USP:
+        CharacterReloadMontage = USPCharacterReloadMontage;
+        GunReloadAnimation = USPGunReloadAnimation;
         break;
     case EWeaponType::Ak47:
         CharacterReloadMontage = Ak47CharacterReloadMontage;
@@ -271,7 +295,8 @@ void UWeaponSystemComponent::OnMontageEnded(UAnimMontage* Montage, bool bInterru
 	{
 		bAttacking = false;
 	}
-	else if (Montage == Ak47CharacterReloadMontage)
+	else if (Montage == Ak47CharacterReloadMontage ||
+             Montage == USPCharacterReloadMontage)
 	{
 		bIsReloading = false;
 	}

@@ -99,6 +99,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
 	TObjectPtr<UAnimationAsset> Ak47GunReloadAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimMontage> USPCharacterReloadMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+	TObjectPtr<UAnimationAsset> USPGunReloadAnimation;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
@@ -116,6 +122,7 @@ private:
 	void FirstAidInjection();
 
 	void ReloadAk47();
+	void ReloadUSP();
 
 	void WeaponLineTrace();
 	void PlayFireMontage();
