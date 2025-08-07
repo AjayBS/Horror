@@ -79,10 +79,9 @@ void AHG_PlayerController::ToggleInventory()
 		SetShowMouseCursor(true);
 		InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 
-		FInputModeGameAndUI InputMode;
+		FInputModeUIOnly InputMode;
 		InputMode.SetWidgetToFocus(InventoryWidget->TakeWidget()); // Focus on the widget
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); // Optional
-		InputMode.SetHideCursorDuringCapture(true); // Optional
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 
 		if (ExaminationWidget->IsInViewport())
 		{
