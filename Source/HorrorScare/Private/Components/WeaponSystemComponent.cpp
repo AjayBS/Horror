@@ -57,6 +57,9 @@ void UWeaponSystemComponent::ShootUSP()
 
     WeaponLineTrace();
     PlayFireMontage();
+
+    CharacterRef->AddControllerPitchInput(FMath::RandRange(-0.1f, -0.4f)); // Simulate recoil
+    CharacterRef->AddControllerYawInput(FMath::RandRange(-0.2f, 0.2f)); // Simulate recoil
 }
 
 void UWeaponSystemComponent::ShootAk47()
@@ -71,6 +74,9 @@ void UWeaponSystemComponent::ShootAk47()
    
     WeaponLineTrace();
     PlayFireMontage();
+
+    CharacterRef->AddControllerPitchInput(FMath::RandRange(-0.1f, -0.4f)); // Simulate recoil
+    CharacterRef->AddControllerYawInput(FMath::RandRange(-0.2f, 0.2f)); // Simulate recoil
 }
 
 void UWeaponSystemComponent::AxeAttack()
