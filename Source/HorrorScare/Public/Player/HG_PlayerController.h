@@ -67,6 +67,12 @@ public:
 	TObjectPtr<UInputAction> EquipWeaponAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> EquipWeaponNextAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> EquipWeaponPreviousAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ShootWeaponAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -110,6 +116,8 @@ protected:
 	void Return();
 
 	void EquipWeapon(const FInputActionValue& Value);
+	void EquipWeaponPrevious();
+	void EquipWeaponNext();
 	void ShootWeapon();
 	void StopShootWeapon();
 	void ReloadWeapon();

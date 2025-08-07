@@ -55,6 +55,9 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(ReturnAction, ETriggerEvent::Started, this, &AHG_PlayerController::Return);
 
 		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Triggered, this, &AHG_PlayerController::EquipWeapon);
+		EnhancedInputComponent->BindAction(EquipWeaponNextAction, ETriggerEvent::Started, this, &AHG_PlayerController::EquipWeaponNext);
+		EnhancedInputComponent->BindAction(EquipWeaponPreviousAction, ETriggerEvent::Started, this, &AHG_PlayerController::EquipWeaponPrevious);
+
 		EnhancedInputComponent->BindAction(ShootWeaponAction, ETriggerEvent::Started, this, &AHG_PlayerController::ShootWeapon);
 		EnhancedInputComponent->BindAction(ShootWeaponAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopShootWeapon);
 
@@ -110,7 +113,7 @@ void AHG_PlayerController::Look(const FInputActionValue& Value)
 	{
 		// add yaw and pitch input to controller
 		GetCharacter()->AddControllerYawInput(LookAxisVector.X * LookSensitivity);
-		GetCharacter()->AddControllerPitchInput(-LookAxisVector.Y * LookSensitivity);
+		GetCharacter()->AddControllerPitchInput(LookAxisVector.Y * LookSensitivity);
 	}
 }
 
@@ -243,6 +246,22 @@ void AHG_PlayerController::EquipWeapon(const FInputActionValue& Value)
 		{
 			CharacterRef->EquipNextWeapon();
 		}		
+	}
+}
+
+void AHG_PlayerController::EquipWeaponPrevious()
+{
+	if (CharacterRef)
+	{
+		CharacterRef->EquipPreviousWeapon();
+	}
+}
+
+void AHG_PlayerController::EquipWeaponNext()
+{
+	if (CharacterRef)
+	{
+		CharacterRef->EquipNextWeapon();
 	}
 }
 
