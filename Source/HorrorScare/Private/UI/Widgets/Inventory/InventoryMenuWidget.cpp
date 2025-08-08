@@ -43,8 +43,8 @@ void UInventoryMenuWidget::NativeConstruct()
 void UInventoryMenuWidget::OpenDropDownMenu(UHGInventorySlotWidget* InSlot)
 {
 	UUniformGridSlot* GridSlot = UWidgetLayoutLibrary::SlotAsUniformGridSlot(InSlot);
-	int32 Row = GridSlot->Row + 1;
-	int32 Column = GridSlot->Column + 0;
+	int32 Row = GridSlot->GetRow() + 1;
+	int32 Column = GridSlot->GetColumn() + 0;
 
 	int32 XSize = InSlot->GetDesiredSize().X + InventoryGrid->InventoryGridPanel->GetSlotPadding().Left + InventoryGrid->InventoryGridPanel->GetSlotPadding().Right;
 	int32 YSize = InSlot->GetDesiredSize().Y + InventoryGrid->InventoryGridPanel->GetSlotPadding().Top + InventoryGrid->InventoryGridPanel->GetSlotPadding().Bottom;
