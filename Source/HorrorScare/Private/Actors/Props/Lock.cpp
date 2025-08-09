@@ -2,8 +2,9 @@
 
 
 #include "Actors/Props/Lock.h"
-#include "Components/SceneComponent.h"
 #include "Actors/Props/LockDial.h"
+#include "Components/BoxComponent.h"
+#include "Components/SceneComponent.h"
 
 // Sets default values
 ALock::ALock()
@@ -13,6 +14,9 @@ ALock::ALock()
 
 	LockMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	LockMesh->SetupAttachment(Root);
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	BoxCollision->SetupAttachment(Root);
 }
 
 bool ALock::CheckCode()
@@ -53,6 +57,7 @@ void ALock::BeginPlay()
 			SpawnParams);
 
 		Dial->Index = i; // Set the index for the dial
+		Dial->LockRef = this; // Set the reference to the lock
 
 		LockDials.Add(Dial);
 

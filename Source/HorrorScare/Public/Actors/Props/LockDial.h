@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "LockDial.generated.h"
 
+class ALock;
+
 UCLASS()
 class HORRORSCARE_API ALockDial : public AActor
 {
@@ -27,16 +29,22 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock Dial")
 	bool bCanRotate = true;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Lock Dial")
+	TObjectPtr<ALock> LockRef;
+
 	ALockDial();
 
 	UFUNCTION(BlueprintCallable, Category = "Lock Dial")
 	void FindNumber();
 
 	UFUNCTION(BlueprintCallable, Category = "Lock Dial")
-	void RotateDial();
+	void RotateDial(bool bReverse);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Lock Dial")
 	void BP_RotateDial();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Lock Dial")
+	void BP_RotateDialBackwards();
 
 protected:
 	UPROPERTY(VisibleAnywhere)

@@ -71,6 +71,11 @@ void AHG_PlayerController::SetupInputComponent()
 
 void AHG_PlayerController::ToggleInventory()
 {
+	if(!bCanOpenInventory)
+	{
+		return; // Prevent opening inventory if it's not allowed
+	}
+
 	if (!bIsInventoryOpen)
 	{
 		bIsInventoryOpen = true;

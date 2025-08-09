@@ -16,7 +16,7 @@ ALockDial::ALockDial()
 
 void ALockDial::FindNumber()
 {
-	Number = FMath::TruncToInt(DialRotation / 36.0f);
+	Number = FMath::TruncToInt(FMath::Abs(DialRotation / 36.0f));
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(
@@ -28,12 +28,19 @@ void ALockDial::FindNumber()
 	}
 }
 
-void ALockDial::RotateDial()
+void ALockDial::RotateDial(bool bReverse)
 {
 	if (bCanRotate)
 	{
 		bCanRotate = false;
-		BP_RotateDial();
+		if (bReverse)
+		{
+			BP_RotateDialBackwards();
+		}
+		else
+		{
+			BP_RotateDial();
+		}		
 	}
 }
 

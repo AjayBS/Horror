@@ -93,6 +93,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	int32 InventorySlots = 8;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
+	bool bCanOpenInventory = true;
+
 	UFUNCTION(BlueprintCallable)
 	void ToggleInventory();
 

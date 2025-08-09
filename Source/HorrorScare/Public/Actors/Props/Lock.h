@@ -7,6 +7,7 @@
 #include "Lock.generated.h"
 
 class ALockDial;
+class UBoxComponent;
 
 UCLASS()
 class HORRORSCARE_API ALock : public AActor
@@ -17,6 +18,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> LockMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UBoxComponent> BoxCollision;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Lock")
 	TSubclassOf<ALockDial> LockDialClass;
 
@@ -26,11 +30,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
 	TArray<int32> LockCombination;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
+	FVector BoxPosition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock")
+	FVector BoxExtent = FVector(32.f);
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<TObjectPtr<ALockDial>> LockDials;
 
 	// Sets default values for this actor's properties
 	ALock();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Lock")
+	void BP_CheckEveryTurn();
 
 	UFUNCTION(BlueprintCallable, Category="Lock")
 	bool CheckCode();
