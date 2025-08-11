@@ -40,6 +40,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Lock Dial")
 	void RotateDial(bool bReverse);
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Arrow Widget")
+	void BP_SetArrowWidgetIndex();
+
 	UFUNCTION(BlueprintImplementableEvent, Category = "Lock Dial")
 	void BP_RotateDial();
 

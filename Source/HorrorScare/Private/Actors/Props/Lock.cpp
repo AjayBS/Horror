@@ -58,6 +58,7 @@ void ALock::BeginPlay()
 
 		Dial->Index = i; // Set the index for the dial
 		Dial->LockRef = this; // Set the reference to the lock
+		Dial->BP_SetArrowWidgetIndex(); // Call the Blueprint function to set the row, column
 
 		LockDials.Add(Dial);
 
