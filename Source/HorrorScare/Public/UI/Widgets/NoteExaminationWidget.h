@@ -28,6 +28,7 @@ public:
 
 private:
 	TObjectPtr<AHG_PlayerController> PlayerControllerRef;
+	TObjectPtr<ANotes> CurrentNote;
 	void EnableRotationOperations(bool bEnable);
 	
 };

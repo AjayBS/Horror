@@ -22,4 +22,6 @@ public:
 
 	ANoteExaminationActor();
 	
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_UpdateBackNoteText(ANotes* Note);
 };

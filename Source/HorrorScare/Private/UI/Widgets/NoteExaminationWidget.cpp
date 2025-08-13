@@ -21,6 +21,7 @@ void UNoteExaminationWidget::NativeConstruct()
 		PlayerControllerRef->OnReturn.AddDynamic(this, &UNoteExaminationWidget::CloseExaminationWidget);
 	}
 	EnableRotationOperations(true);
+	CurrentNote->SetActorHiddenInGame(true);
 }
 
 void UNoteExaminationWidget::UpdateWidget(ANotes* Note)
@@ -31,6 +32,8 @@ void UNoteExaminationWidget::UpdateWidget(ANotes* Note)
 		if (HGWorldSS && HGWorldSS->NoteExaminationRef)
 		{
 			HGWorldSS->NoteExaminationRef->NoteText->SetText(Note->NoteText->Text);
+			HGWorldSS->NoteExaminationRef->BP_UpdateBackNoteText(Note);
+			CurrentNote = Note;
 		}
 	}
 }
@@ -41,6 +44,7 @@ void UNoteExaminationWidget::CloseExaminationWidget()
 	{
 		EnableRotationOperations(false);
 		RemoveFromParent();
+		CurrentNote->SetActorHiddenInGame(false);
 	}
 }
 
