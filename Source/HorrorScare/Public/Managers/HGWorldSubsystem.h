@@ -9,6 +9,7 @@
 
 class APickupActors;
 class AExaminationActor;
+class ANoteExaminationActor;
 
 USTRUCT(BlueprintType)
 struct FItemData
@@ -71,5 +72,8 @@ class HORRORSCARE_API UHGWorldSubsystem : public UWorldSubsystem
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TObjectPtr<AExaminationActor> ExaminationRef;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<ANoteExaminationActor> NoteExaminationRef;
 	
 };

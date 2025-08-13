@@ -108,6 +108,32 @@ void AHG_PlayerController::ToggleInventory()
 	}
 }
 
+void AHG_PlayerController::OpenExaminationWidget(UHGUserWidget* Widget, bool bOpened)
+{
+	if (bOpened)
+	{
+		CharacterRef->GetCharacterMovement()->DisableMovement();
+		SetIgnoreLookInput(true);
+		SetShowMouseCursor(true);
+
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(Widget->TakeWidget()); // Focus on the widget
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+		bCanOpenInventory = false; // Disable inventory opening while examination is open
+	}
+	else
+	{
+		CharacterRef->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+		ResetIgnoreLookInput();
+		SetShowMouseCursor(false);
+
+		FInputModeGameOnly InputMode;
+		SetInputMode(InputMode);
+		bCanOpenInventory = true;
+	}
+}
+
 void AHG_PlayerController::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D

@@ -12,6 +12,7 @@ class UInventoryMenuWidget;
 struct FInputActionValue;
 class AL1_Character;
 class UExaminationWidget;
+class UHGUserWidget;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReturnAction);
 
@@ -98,6 +99,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleInventory();
+
+	void OpenExaminationWidget(UHGUserWidget* Widget, bool bOpened);
 
 	void SetIsOpenInventory(bool bIsOpen) { bIsInventoryOpen = bIsOpen; }
 
