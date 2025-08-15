@@ -5,6 +5,9 @@
 
 #include "Actors/Examination/NoteExaminationActor.h"
 #include "Actors/Props/Notes.h"
+#include "Components/Button.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "Components/TextRenderComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Managers/HGWorldSubsystem.h"
@@ -22,6 +25,16 @@ void UNoteExaminationWidget::NativeConstruct()
 	}
 	EnableRotationOperations(true);
 	CurrentNote->SetActorHiddenInGame(true);
+
+	if (CloseButton)
+	{
+		CloseButton->OnPressed.AddDynamic(this, &UNoteExaminationWidget::CloseButtonClicked);
+	}
+	
+	if (ReadTextButton)
+	{
+		ReadTextButton->OnPressed.AddDynamic(this, &UNoteExaminationWidget::ReadTextButtonClicked);
+	}
 }
 
 void UNoteExaminationWidget::UpdateWidget(ANotes* Note)
@@ -34,6 +47,7 @@ void UNoteExaminationWidget::UpdateWidget(ANotes* Note)
 			HGWorldSS->NoteExaminationRef->NoteText->SetText(Note->NoteText->Text);
 			HGWorldSS->NoteExaminationRef->BP_UpdateBackNoteText(Note);
 			CurrentNote = Note;
+			NoteText->SetText(Note->WidgetText);
 		}
 	}
 }
@@ -46,6 +60,24 @@ void UNoteExaminationWidget::CloseExaminationWidget()
 		RemoveFromParent();
 		CurrentNote->SetActorHiddenInGame(false);
 	}
+}
+
+void UNoteExaminationWidget::CloseButtonClicked()
+{
+	BlackImage->SetVisibility(ESlateVisibility::Collapsed);
+	NoteText->SetVisibility(ESlateVisibility::Collapsed);
+	CloseButton->SetVisibility(ESlateVisibility::Collapsed);
+
+	NoteImage->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UNoteExaminationWidget::ReadTextButtonClicked()
+{
+	BlackImage->SetVisibility(ESlateVisibility::Visible);
+	NoteText->SetVisibility(ESlateVisibility::Visible);
+	CloseButton->SetVisibility(ESlateVisibility::Visible);
+
+	NoteImage->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UNoteExaminationWidget::EnableRotationOperations(bool bEnable)

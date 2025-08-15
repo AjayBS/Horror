@@ -20,6 +20,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UTextRenderComponent> NoteText;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Note")
+	FText WidgetText;
+
 	ANotes();
 
 protected:
