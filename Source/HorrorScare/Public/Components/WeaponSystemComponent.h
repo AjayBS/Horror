@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Managers/HGWorldSubsystem.h"
 #include "WeaponSystemComponent.generated.h"
 
 class AL1_Character;
@@ -22,6 +23,7 @@ public:
 	float GetAk47ShootRate() const { return Ak47_ShootRate; }
 	bool CanEquip() const { return !bAttacking; }
 	bool IsReloading() const { return bIsReloading; }
+	bool IsWeaponPicked(EWeaponType WeaponType) const;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="USP")

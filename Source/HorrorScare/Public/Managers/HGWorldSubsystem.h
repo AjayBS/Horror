@@ -61,6 +61,16 @@ enum class EWeaponType : uint8
     MAX        UMETA(Hidden)
 };
 
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+    GENERATED_BODY()
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
+    EWeaponType Weapon;
+    bool bIsEquipped = false;
+};
+
 /**
  * 
  */

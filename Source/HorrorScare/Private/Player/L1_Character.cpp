@@ -160,14 +160,14 @@ void AL1_Character::EquipNextWeapon()
 {
     if (BPCWeaponSystemComponent->CanEquip() && !BPCWeaponSystemComponent->IsReloading())
     {
-        uint8 Next = static_cast<uint8>(CurrentWeapon) + 1;
+        int32 NextIndex = EquippedIndex + 1;
 
-        if (Next >= static_cast<uint8>(EWeaponType::MAX))
+        if (NextIndex >= CurrentWeapons.Num())
         {
-            Next = 0; // Loop back to the first weapon
+            NextIndex = 0; // Loop back to the first weapon
         }
 
-        CurrentWeapon = static_cast<EWeaponType>(Next);
+        EquippedIndex = NextIndex;
         BP_WeaponChanged();
     }
 }
@@ -176,14 +176,14 @@ void AL1_Character::EquipPreviousWeapon()
 {
     if (BPCWeaponSystemComponent->CanEquip() && !BPCWeaponSystemComponent->IsReloading())
     {
-        int32 Previous = static_cast<int32>(CurrentWeapon) - 1;
+        int32 PreviousIndex = EquippedIndex - 1;
 
-        if (Previous < 0)
+        if (PreviousIndex < 0)
         {
-            Previous = static_cast<int32>(EWeaponType::MAX) - 1;  // Wrap to last valid value
+            PreviousIndex = CurrentWeapons.Num() - 1;  // Wrap to last valid value
         }
 
-        CurrentWeapon = static_cast<EWeaponType>(Previous);
+        EquippedIndex = PreviousIndex;
         BP_WeaponChanged();
     }
 }

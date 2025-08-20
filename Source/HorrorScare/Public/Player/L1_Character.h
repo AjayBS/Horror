@@ -68,7 +68,10 @@ public:
 	TObjectPtr<UObject> GrabbedObject;
 
 	UPROPERTY(Category = Character, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EWeaponType CurrentWeapon = EWeaponType::Axe;
+	TArray<FWeaponData> CurrentWeapons;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 EquippedIndex = 0;
 
 	UFUNCTION(BlueprintCallable)
 	void LineTrace(float Length, bool bIsGrabbing);

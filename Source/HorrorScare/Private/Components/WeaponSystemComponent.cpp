@@ -11,7 +11,7 @@ UWeaponSystemComponent::UWeaponSystemComponent()
 
 void UWeaponSystemComponent::ShootWeapon()
 {
-    switch (CharacterRef->CurrentWeapon)
+    switch (CharacterRef->CurrentWeapons[CharacterRef->EquippedIndex].Weapon)
     {
     case EWeaponType::Ak47:
         ShootAk47();
@@ -144,7 +144,7 @@ void UWeaponSystemComponent::ReloadUSP()
 
 void UWeaponSystemComponent::ReloadWeapon()
 {
-    switch (CharacterRef->CurrentWeapon)
+    switch (CharacterRef->CurrentWeapons[CharacterRef->EquippedIndex].Weapon)
     {
     case EWeaponType::Ak47:
         ReloadAk47();
@@ -161,6 +161,11 @@ void UWeaponSystemComponent::ReloadWeapon()
     default:
         break;
     }   
+}
+
+bool UWeaponSystemComponent::IsWeaponPicked(EWeaponType WeaponType) const
+{
+    return false;
 }
 
 // Called when the game starts
@@ -186,7 +191,7 @@ void UWeaponSystemComponent::WeaponLineTrace()
     }
 
     float Range = 0.f;
-    switch (CharacterRef->CurrentWeapon)
+    switch (CharacterRef->CurrentWeapons[CharacterRef->EquippedIndex].Weapon)
     {
     case EWeaponType::USP:
         Range = USP_Range;
@@ -227,7 +232,7 @@ void UWeaponSystemComponent::PlayFireMontage()
 {
     UAnimMontage* CharacterFireMontage = nullptr;
     UAnimationAsset* GunFireAnimation = nullptr;
-    switch (CharacterRef->CurrentWeapon)
+    switch (CharacterRef->CurrentWeapons[CharacterRef->EquippedIndex].Weapon)
     { 
     case EWeaponType::USP:
 		CharacterFireMontage = USPCharacterFireMontage;
@@ -263,7 +268,7 @@ void UWeaponSystemComponent::PlayReloadMontage()
 {
     UAnimMontage* CharacterReloadMontage = nullptr;
     UAnimationAsset* GunReloadAnimation = nullptr;
-    switch (CharacterRef->CurrentWeapon)
+    switch (CharacterRef->CurrentWeapons[CharacterRef->EquippedIndex].Weapon)
     {
     case EWeaponType::USP:
         CharacterReloadMontage = USPCharacterReloadMontage;
