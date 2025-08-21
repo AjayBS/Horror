@@ -110,7 +110,7 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
 
 void AL1_Character::LineTraceForShooting()
 {
-    if (!BPCWeaponSystemComponent->IsReloading())
+    if (BPCWeaponSystemComponent->IsWeaponPicked(EquippedIndex) && !BPCWeaponSystemComponent->IsReloading())
     {
         BPCWeaponSystemComponent->ShootWeapon();
     }    
@@ -118,12 +118,15 @@ void AL1_Character::LineTraceForShooting()
 
 void AL1_Character::StopShooting()
 {
-    BPCWeaponSystemComponent->StopShooting();
+    if (BPCWeaponSystemComponent->IsWeaponPicked(EquippedIndex))
+    {
+        BPCWeaponSystemComponent->StopShooting();
+    }    
 }
 
 void AL1_Character::ReloadWeapon()
 {
-    if (!BPCWeaponSystemComponent->IsReloading())
+    if (BPCWeaponSystemComponent->IsWeaponPicked(EquippedIndex) && !BPCWeaponSystemComponent->IsReloading())
     {
         BPCWeaponSystemComponent->ReloadWeapon();
     }   
@@ -167,8 +170,11 @@ void AL1_Character::EquipNextWeapon()
             NextIndex = 0; // Loop back to the first weapon
         }
 
-        EquippedIndex = NextIndex;
-        BP_WeaponChanged();
+        if (BPCWeaponSystemComponent->IsWeaponPicked(NextIndex))
+        {
+            EquippedIndex = NextIndex;
+            BP_WeaponChanged();
+        }
     }
 }
 
@@ -182,9 +188,12 @@ void AL1_Character::EquipPreviousWeapon()
         {
             PreviousIndex = CurrentWeapons.Num() - 1;  // Wrap to last valid value
         }
-
-        EquippedIndex = PreviousIndex;
-        BP_WeaponChanged();
+        
+        if (BPCWeaponSystemComponent->IsWeaponPicked(PreviousIndex))
+        {
+            EquippedIndex = PreviousIndex;
+            BP_WeaponChanged();
+        }        
     }
 }
 

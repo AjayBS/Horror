@@ -23,7 +23,7 @@ public:
 	float GetAk47ShootRate() const { return Ak47_ShootRate; }
 	bool CanEquip() const { return !bAttacking; }
 	bool IsReloading() const { return bIsReloading; }
-	bool IsWeaponPicked(EWeaponType WeaponType) const;
+	bool IsWeaponPicked(int32 Index) const;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="USP")

@@ -68,6 +68,8 @@ struct FWeaponData
 public:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
     EWeaponType Weapon;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
     bool bIsEquipped = false;
 };
 

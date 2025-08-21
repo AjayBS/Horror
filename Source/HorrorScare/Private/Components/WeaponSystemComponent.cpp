@@ -163,9 +163,11 @@ void UWeaponSystemComponent::ReloadWeapon()
     }   
 }
 
-bool UWeaponSystemComponent::IsWeaponPicked(EWeaponType WeaponType) const
+bool UWeaponSystemComponent::IsWeaponPicked(int32 Index) const
 {
-    return false;
+    FWeaponData CurrentWeaponData = CharacterRef->CurrentWeapons[Index];
+    
+    return CurrentWeaponData.bIsEquipped;
 }
 
 // Called when the game starts

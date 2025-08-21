@@ -104,7 +104,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_PlayCameraShake(bool bIsSprinting, float MappedValue);
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_WeaponChanged();
 
 	void EquipNextWeapon();
