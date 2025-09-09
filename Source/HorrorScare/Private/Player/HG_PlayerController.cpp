@@ -50,7 +50,6 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopSprint);
 
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AHG_PlayerController::Crouch);
-		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Started, this, &AHG_PlayerController::ToggleInventory);
 
 		EnhancedInputComponent->BindAction(ReturnAction, ETriggerEvent::Started, this, &AHG_PlayerController::Return);
 
