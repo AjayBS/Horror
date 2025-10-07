@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/BPC_Movement.h"
 #include "Player/L1_Character.h"
+#include "Perception/AISense_Hearing.h"
 #include "UI/Widgets/Inventory/InventoryMenuWidget.h"
 #include "UI/Widgets/Inventory/ExaminationWidget.h"
 
@@ -167,6 +168,8 @@ void AHG_PlayerController::Move(const FInputActionValue& Value)
 		GetCharacter()->AddMovementInput(ForwardDirection, MovementVector.Y);
 		GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
 
+		MakeFootstepNoise();
+
 		if (CharacterRef)
 		{
 			CharacterRef->HeadBob();
@@ -316,5 +319,17 @@ void AHG_PlayerController::ReloadWeapon()
 	{
 		CharacterRef->ReloadWeapon();
 	}
+}
+
+void AHG_PlayerController::MakeFootstepNoise()
+{
+	UAISense_Hearing::ReportNoiseEvent(
+		GetWorld(),
+		GetCharacter()->GetActorLocation(),
+		1.0f,        // Loudness (0-1)
+		this,        // Instigator
+		FootstepNoise,      // Max hearing range
+		FName("Footstep")
+	);
 }
 

@@ -21,7 +21,7 @@ AL1_Character::AL1_Character()
 
     // Create camera and attach to boom
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-    FollowCamera->SetupAttachment(GetMesh(), FName("head"));
+    FollowCamera->SetupAttachment(GetMesh());
     FollowCamera->bUsePawnControlRotation = true;
 
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));

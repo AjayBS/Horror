@@ -97,6 +97,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
 	bool bCanOpenInventory = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Perception")
+	float FootstepNoise = 1000.f;
+
 	UFUNCTION(BlueprintCallable)
 	void ToggleInventory();
 
@@ -133,4 +136,6 @@ protected:
 private:
 	AL1_Character* CharacterRef;	
 	bool bIsInventoryOpen = false;
+
+	void MakeFootstepNoise();
 };
