@@ -27,23 +27,10 @@ void AHorrorAIController::BeginPlay()
 
 void AHorrorAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-    // Check if it's a hearing stimulus
-    if (Stimulus.Type == UAISense::GetSenseID<UAISense_Hearing>())
-    {
-        if (Stimulus.WasSuccessfullySensed())
-        {
-            // AI heard something
-            UE_LOG(LogTemp, Warning, TEXT("Heard: %s at location %s"),
-                *Actor->GetName(), *Stimulus.StimulusLocation.ToString());
+	HandlePerceptionUpdated(Actor, Stimulus);
+}
 
-            // React to sound
-            // e.g., investigate, alert, attack
-        }
-        else
-        {
-            // Lost track of sound
-            UE_LOG(LogTemp, Warning, TEXT("Lost sound from: %s"), *Actor->GetName());
-        }
-    }
+void AHorrorAIController::HandlePerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+{
 }
 

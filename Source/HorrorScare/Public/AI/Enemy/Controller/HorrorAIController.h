@@ -34,5 +34,7 @@ protected:
 public:
 	UFUNCTION()
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
+
+	virtual void HandlePerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	
 };
