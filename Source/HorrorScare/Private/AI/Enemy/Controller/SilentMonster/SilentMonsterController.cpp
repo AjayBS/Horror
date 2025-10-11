@@ -27,7 +27,10 @@ void ASilentMonsterController::HandlePerceptionUpdated(AActor* Actor, FAIStimulu
             }
             else
             {
-                BlackboardComp->SetValueAsBool(FName("AttackNoise"), true);
+                if (BlackboardComp->GetValueAsBool(FName("Investigated")))
+                {
+                    BlackboardComp->SetValueAsBool(FName("AttackNoise"), true);
+                }
             }
         }
         else
