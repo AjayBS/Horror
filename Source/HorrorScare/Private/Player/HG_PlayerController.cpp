@@ -168,7 +168,10 @@ void AHG_PlayerController::Move(const FInputActionValue& Value)
 		GetCharacter()->AddMovementInput(ForwardDirection, MovementVector.Y);
 		GetCharacter()->AddMovementInput(RightDirection, MovementVector.X);
 
-		MakeFootstepNoise();
+		if (!CharacterRef->BPCMovementComponent->IsCrouching())
+		{
+			MakeFootstepNoise();
+		}		
 
 		if (CharacterRef)
 		{
