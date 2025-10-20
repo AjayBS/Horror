@@ -43,8 +43,7 @@ void AHG_PlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AHG_PlayerController::StopJumping);
 
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AHG_PlayerController::Interact);
-		EnhancedInputComponent->BindAction(LMBAction, ETriggerEvent::Started, this, &AHG_PlayerController::GrabAction);
-		EnhancedInputComponent->BindAction(LMBAction, ETriggerEvent::Completed, this, &AHG_PlayerController::ReleaseAction);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &AHG_PlayerController::ReleaseAction);
 
 		EnhancedInputComponent->BindAction(FlashlightAction, ETriggerEvent::Started, this, &AHG_PlayerController::Flashlight);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AHG_PlayerController::StartSprintAction);
@@ -196,7 +195,7 @@ void AHG_PlayerController::StopJumping()
 
 void AHG_PlayerController::Interact()
 {
-	CharacterRef->LineTrace(350.0f, false); // Example length, adjust as needed
+	CharacterRef->LineTrace(350.0f); // Example length, adjust as needed
 }
 
 void AHG_PlayerController::Flashlight()
@@ -205,14 +204,6 @@ void AHG_PlayerController::Flashlight()
 	{
 		CharacterRef->ToggleFlashlight();
 	}
-}
-
-void AHG_PlayerController::GrabAction()
-{
-	if (CharacterRef)
-	{
-		CharacterRef->LineTrace(350.0f, true);
-	}	
 }
 
 void AHG_PlayerController::ReleaseAction()

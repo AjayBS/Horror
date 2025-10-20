@@ -118,7 +118,6 @@ protected:
 	void StopJumping();
 	void Interact();
 	void Flashlight();
-	void GrabAction();
 	void ReleaseAction();
 	void StartSprintAction();
 	void StopSprint();

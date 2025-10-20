@@ -3,6 +3,7 @@
 
 #include "Player/L1_Character.h"
 
+#include "Actors/HGInteractionActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BPCFlashlight.h"
 #include "Components/BPCInventory.h"
@@ -71,7 +72,7 @@ void AL1_Character::BeginPlay()
     }
 }
 
-void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
+void AL1_Character::LineTrace(float Length)
 {
     FVector Start;
     FVector End;
@@ -97,7 +98,15 @@ void AL1_Character::LineTrace(float Length, bool bIsGrabbing)
     // Check if we hit something
     if (bHit)
     {
-        if (!bIsGrabbing)
+        AHGInteractionActor* HitActor = Cast<AHGInteractionActor>(HitResult.GetActor());
+        bool bIsActorGrabbable = false;
+
+        if (HitActor)
+        {
+            bIsActorGrabbable = HitActor->bIsGrabbable;
+        }
+
+        if (!bIsActorGrabbable)
         {
             BP_HitActor(HitResult);
         }

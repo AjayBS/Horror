@@ -74,7 +74,7 @@ public:
 	int32 EquippedIndex = 0;
 
 	UFUNCTION(BlueprintCallable)
-	void LineTrace(float Length, bool bIsGrabbing);
+	void LineTrace(float Length);
 
 	UFUNCTION(BlueprintCallable)
 	void LineTraceForShooting();
