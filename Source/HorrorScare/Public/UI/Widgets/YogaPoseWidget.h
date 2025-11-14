@@ -27,6 +27,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (BindWidget = true))
 	TObjectPtr<UTimerWidget> Timer;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Yoga Pose")
+	TArray<FKey> ShuffledKeys;
+
+	virtual void NativeConstruct() override;
+	void ShuffleKeyArray();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_ShuffleKeysSet();
+
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 	
 };

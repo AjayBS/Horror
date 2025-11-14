@@ -8,7 +8,7 @@ public class HorrorScare : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "StateTreeModule", "StateTreeEditorModule" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "StateTreeModule", "StateTreeEditorModule", "CommonInput" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
