@@ -57,28 +57,67 @@ void UYogaPoseWidget::ShuffleKeyArray()
     BP_ShuffleKeysSet();
 }
 
+bool UYogaPoseWidget::CheckPattern()
+{
+    bool bPatternValid = true;
+    for (int32 i = 0; i < ShuffledKeys.Num(); i++)
+    {
+        if (i + 1 > PressedKeys.Num())
+        {
+            bPatternValid = false;
+            break;
+        }
+
+        if (ShuffledKeys[i] != PressedKeys[i])
+        {
+            bPatternValid = false;
+            break;
+        }
+    }
+
+    return bPatternValid;
+}
+
+void UYogaPoseWidget::ResetSequenceAndTimer()
+{
+    ShuffleKeyArray();
+    PressedKeys.Empty();
+    Timer->SetTime(0, 0, 5);
+}
+
 FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
 {
+    if (InKeyEvent.GetKey() == EKeys::Escape)
+    {
+        BP_BackKeyPressed();
+    }
+
     if (Emoticons->IsVisible())
     {
-        Emoticons->SetVisibility(ESlateVisibility::Collapsed);
-        Sequence->SetVisibility(ESlateVisibility::Visible);
-
         if (InKeyEvent.GetKey() == EKeys::Up || 
             InKeyEvent.GetKey() == EKeys::Down ||
             InKeyEvent.GetKey() == EKeys::Left ||
             InKeyEvent.GetKey() == EKeys::Right)
         {
+            Emoticons->SetVisibility(ESlateVisibility::Collapsed);
+            Sequence->SetVisibility(ESlateVisibility::Visible);
+
             Timer->SetGoal(0, 0, 0);
             Timer->SetTime(0, 0, 5);
-            Timer->StartTimer(false);
+
+            PressedKeys.Empty();
 
             return FReply::Handled();
         }
     }
     else if(Sequence->IsVisible())
     {
+        if (!Timer->IsTimerRunning())
+        {
+            Timer->StartTimer(false);
+        }
 
+        PressedKeys.Add(InKeyEvent.GetKey());
     }
 
     return FReply::Handled();

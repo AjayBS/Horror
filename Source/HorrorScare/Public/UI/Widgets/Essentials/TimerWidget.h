@@ -54,6 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartTimer(bool bIsForward);
 
+	UFUNCTION(BlueprintCallable)
+	bool IsTimerRunning();
+
 private:
 	FTimerHandle TimerHandle;
 

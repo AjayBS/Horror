@@ -39,6 +39,16 @@ void UTimerWidget::SetTime(float Hours, float Minutes, float Seconds)
 	T_Time->SetText(FormattedText);
 }
 
+bool UTimerWidget::IsTimerRunning()
+{
+	if (TimerHandle.IsValid())
+	{
+		return GetWorld()->GetTimerManager().IsTimerActive(TimerHandle);
+	}
+
+	return false;
+}
+
 FText UTimerWidget::ConvertIntToFText(int32 InIntValue)
 {
 	FString MyString = FString::FromInt(InIntValue);
