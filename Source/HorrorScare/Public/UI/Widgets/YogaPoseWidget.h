@@ -45,6 +45,9 @@ public:
 	void BP_ShuffleKeysSet();
 
 	UFUNCTION(BlueprintImplementableEvent)
+	void BP_TimerStarted();
+
+	UFUNCTION(BlueprintImplementableEvent)
 	void BP_BackKeyPressed();
 
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;

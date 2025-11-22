@@ -115,6 +115,7 @@ FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
         if (!Timer->IsTimerRunning())
         {
             Timer->StartTimer(false);
+            BP_TimerStarted();
         }
 
         PressedKeys.Add(InKeyEvent.GetKey());
