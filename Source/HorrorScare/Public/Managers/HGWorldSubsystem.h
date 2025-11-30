@@ -73,6 +73,15 @@ public:
     bool bIsEquipped = false;
 };
 
+UENUM(BlueprintType)
+enum class EEmotionsData : uint8
+{
+    Anger        UMETA(DisplayName = "Anger"),
+    Envy     UMETA(DisplayName = "Envy"),
+    Pride        UMETA(DisplayName = "Pride"),
+    Greed    UMETA(DisplayName = "Greed")
+};
+
 /**
  * 
  */

@@ -5,6 +5,7 @@
 #include "InputCoreTypes.h"
 #include "Components/Overlay.h"
 #include "CommonInputSubsystem.h"
+#include "Managers/HGWorldSubsystem.h"
 #include "UI/Widgets/Essentials/TimerWidget.h"
 
 void UYogaPoseWidget::NativeConstruct()
@@ -60,6 +61,12 @@ void UYogaPoseWidget::ShuffleKeyArray()
 bool UYogaPoseWidget::CheckPattern()
 {
     bool bPatternValid = true;
+
+    if (PressedKeys.Num() != ShuffledKeys.Num())
+    {
+        return false;
+    }
+
     for (int32 i = 0; i < ShuffledKeys.Num(); i++)
     {
         if (i + 1 > PressedKeys.Num())
@@ -105,6 +112,8 @@ FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
             Timer->SetGoal(0, 0, 0);
             Timer->SetTime(0, 0, 5);
 
+            SetCurrentEmotion(InKeyEvent);
+
             PressedKeys.Empty();
 
             return FReply::Handled();
@@ -122,4 +131,24 @@ FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
     }
 
     return FReply::Handled();
+}
+
+void UYogaPoseWidget::SetCurrentEmotion(const FKeyEvent& InKeyEvent)
+{
+    if (InKeyEvent.GetKey() == EKeys::Left)
+    {
+        CurrentEmotion = EEmotionsData::Anger;
+    }
+    else if (InKeyEvent.GetKey() == EKeys::Right)
+    {
+        CurrentEmotion = EEmotionsData::Envy;
+    }
+    else if (InKeyEvent.GetKey() == EKeys::Up)
+    {
+        CurrentEmotion = EEmotionsData::Pride;
+    }
+    else if (InKeyEvent.GetKey() == EKeys::Down)
+    {
+        CurrentEmotion = EEmotionsData::Greed;
+    }
 }

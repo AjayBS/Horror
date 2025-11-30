@@ -8,6 +8,7 @@
 
 class UOverlay;
 class UTimerWidget;
+enum class EEmotionsData : uint8;
 
 /**
  * 
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (BindWidget = true))
 	TObjectPtr<UTimerWidget> Timer;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EEmotionsData CurrentEmotion;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Yoga Pose")
 	TArray<FKey> ShuffledKeys;
@@ -52,5 +56,5 @@ public:
 
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
-	
+	void SetCurrentEmotion(const FKeyEvent& InKeyEvent);
 };
