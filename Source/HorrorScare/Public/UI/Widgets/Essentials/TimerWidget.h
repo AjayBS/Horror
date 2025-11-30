@@ -57,6 +57,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsTimerRunning();
 
+	UFUNCTION(BlueprintCallable)
+	void SetGoalText(FText Text);
+
 private:
 	FTimerHandle TimerHandle;
 

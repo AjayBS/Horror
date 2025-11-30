@@ -49,6 +49,11 @@ bool UTimerWidget::IsTimerRunning()
 	return false;
 }
 
+void UTimerWidget::SetGoalText(FText Text)
+{
+	T_GoalText->SetText(Text);
+}
+
 FText UTimerWidget::ConvertIntToFText(int32 InIntValue)
 {
 	FString MyString = FString::FromInt(InIntValue);
