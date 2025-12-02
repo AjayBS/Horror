@@ -21,4 +21,7 @@ public:
 	TMap<EEmotionsData, bool> EmotionStates;
 	
 	UHGGameInstance();
+
+	UFUNCTION(BlueprintCallable)
+	void SetEmotionValue(EEmotionsData Emotion, bool bValue);
 };

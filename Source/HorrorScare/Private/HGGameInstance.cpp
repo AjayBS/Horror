@@ -11,3 +11,8 @@ UHGGameInstance::UHGGameInstance()
 	EmotionStates.Add(EEmotionsData::Greed, false);
 	EmotionStates.Add(EEmotionsData::Pride, false);
 }
+
+void UHGGameInstance::SetEmotionValue(EEmotionsData Emotion, bool bValue)
+{
+	EmotionStates[Emotion] = bValue;
+}
