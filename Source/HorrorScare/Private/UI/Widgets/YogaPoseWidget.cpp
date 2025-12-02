@@ -2,9 +2,10 @@
 
 
 #include "UI/Widgets/YogaPoseWidget.h"
-#include "InputCoreTypes.h"
 #include "Components/Overlay.h"
 #include "CommonInputSubsystem.h"
+#include "HGGameInstance.h"
+#include "InputCoreTypes.h"
 #include "Managers/HGWorldSubsystem.h"
 #include "UI/Widgets/Essentials/TimerWidget.h"
 
@@ -101,22 +102,30 @@ FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
 
     if (Emoticons->IsVisible())
     {
-        if (InKeyEvent.GetKey() == EKeys::Up || 
-            InKeyEvent.GetKey() == EKeys::Down ||
-            InKeyEvent.GetKey() == EKeys::Left ||
-            InKeyEvent.GetKey() == EKeys::Right)
+        SetCurrentEmotion(InKeyEvent);
+
+        // If no emotion key was pressed, nothing to do
+        if (!bIsEmotionKeyPressed)
         {
-            Emoticons->SetVisibility(ESlateVisibility::Collapsed);
-            Sequence->SetVisibility(ESlateVisibility::Visible);
-
-            Timer->SetGoal(0, 0, 0);
-            Timer->SetTime(0, 0, 5);
-
-            SetCurrentEmotion(InKeyEvent);
-
-            PressedKeys.Empty();
-
             return FReply::Handled();
+        }
+        if (UHGGameInstance* GI = Cast<UHGGameInstance>(GetGameInstance()))
+        {
+            if (const bool* bEmotionEnabled = GI->EmotionStates.Find(CurrentEmotion))
+            {
+                if (*bEmotionEnabled)
+                {
+                    Emoticons->SetVisibility(ESlateVisibility::Collapsed);
+                    Sequence->SetVisibility(ESlateVisibility::Visible);
+
+                    Timer->SetGoal(0, 0, 0);
+                    Timer->SetTime(0, 0, 5);
+
+                    PressedKeys.Empty();
+
+                    return FReply::Handled();
+                }
+            }    
         }
     }
     else if(Sequence->IsVisible())
@@ -138,17 +147,21 @@ void UYogaPoseWidget::SetCurrentEmotion(const FKeyEvent& InKeyEvent)
     if (InKeyEvent.GetKey() == EKeys::Left)
     {
         CurrentEmotion = EEmotionsData::Anger;
+        bIsEmotionKeyPressed = true;
     }
     else if (InKeyEvent.GetKey() == EKeys::Right)
     {
         CurrentEmotion = EEmotionsData::Envy;
+        bIsEmotionKeyPressed = true;
     }
     else if (InKeyEvent.GetKey() == EKeys::Up)
     {
         CurrentEmotion = EEmotionsData::Pride;
+        bIsEmotionKeyPressed = true;
     }
     else if (InKeyEvent.GetKey() == EKeys::Down)
     {
         CurrentEmotion = EEmotionsData::Greed;
+        bIsEmotionKeyPressed = true;
     }
 }

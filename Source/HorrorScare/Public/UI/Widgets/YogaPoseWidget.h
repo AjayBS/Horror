@@ -36,6 +36,8 @@ public:
 
 	TArray<FKey> PressedKeys;
 
+	bool bIsEmotionKeyPressed = false;
+
 	virtual void NativeConstruct() override;
 	void ShuffleKeyArray();
 
