@@ -76,6 +76,7 @@ public:
 UENUM(BlueprintType)
 enum class EEmotionsData : uint8
 {
+    FirstBeat UMETA(DisplayName = "FirstBeat"),
     Anger        UMETA(DisplayName = "Anger"),
     Envy     UMETA(DisplayName = "Envy"),
     Pride        UMETA(DisplayName = "Pride"),

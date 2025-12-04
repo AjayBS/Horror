@@ -38,6 +38,7 @@ void UYogaPoseWidget::NativeConstruct()
         }
     } 
 
+    CurrentGameInstance = Cast<UHGGameInstance>(GetGameInstance());
     ShuffleKeyArray();
 }
 
@@ -109,9 +110,9 @@ FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
         {
             return FReply::Handled();
         }
-        if (UHGGameInstance* GI = Cast<UHGGameInstance>(GetGameInstance()))
+        if (CurrentGameInstance)
         {
-            if (const bool* bEmotionEnabled = GI->EmotionStates.Find(CurrentEmotion))
+            if (const bool* bEmotionEnabled = CurrentGameInstance->EmotionStates.Find(CurrentEmotion))
             {
                 if (*bEmotionEnabled)
                 {
@@ -144,6 +145,20 @@ FReply UYogaPoseWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
 
 void UYogaPoseWidget::SetCurrentEmotion(const FKeyEvent& InKeyEvent)
 {
+    if (const bool* bEmotionEnabled = CurrentGameInstance->EmotionStates.Find(EEmotionsData::FirstBeat))
+    {
+        if (*bEmotionEnabled)
+        {
+            CurrentEmotion = EEmotionsData::FirstBeat;
+            if (InKeyEvent.GetKey() == EKeys::Left)
+            {
+                bIsEmotionKeyPressed = true;
+            }
+           
+            return;
+        }
+    }
+
     if (InKeyEvent.GetKey() == EKeys::Left)
     {
         CurrentEmotion = EEmotionsData::Anger;

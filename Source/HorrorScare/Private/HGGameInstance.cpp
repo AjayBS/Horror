@@ -6,6 +6,7 @@
 
 UHGGameInstance::UHGGameInstance()
 {
+	EmotionStates.Add(EEmotionsData::FirstBeat, false);
 	EmotionStates.Add(EEmotionsData::Anger, false);
 	EmotionStates.Add(EEmotionsData::Envy, false);
 	EmotionStates.Add(EEmotionsData::Greed, false);
@@ -14,5 +15,13 @@ UHGGameInstance::UHGGameInstance()
 
 void UHGGameInstance::SetEmotionValue(EEmotionsData Emotion, bool bValue)
 {
+	if (Emotion != EEmotionsData::FirstBeat)
+	{
+		if (bValue)
+		{
+			EmotionStates[EEmotionsData::FirstBeat] = false;
+		}
+	}
+
 	EmotionStates[Emotion] = bValue;
 }

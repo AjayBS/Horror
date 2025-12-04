@@ -8,6 +8,7 @@
 
 class UOverlay;
 class UTimerWidget;
+class UHGGameInstance;
 enum class EEmotionsData : uint8;
 
 /**
@@ -34,12 +35,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Yoga Pose")
 	TArray<FKey> ShuffledKeys;
 
-	TArray<FKey> PressedKeys;
-
-	bool bIsEmotionKeyPressed = false;
-
 	virtual void NativeConstruct() override;
-	void ShuffleKeyArray();
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckPattern();
@@ -58,5 +54,11 @@ public:
 
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
+private:
+	bool bIsEmotionKeyPressed = false;
+	TArray<FKey> PressedKeys;
+	TObjectPtr<UHGGameInstance> CurrentGameInstance;
+
+	void ShuffleKeyArray();
 	void SetCurrentEmotion(const FKeyEvent& InKeyEvent);
 };
