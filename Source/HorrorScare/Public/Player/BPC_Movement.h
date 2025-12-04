@@ -58,6 +58,7 @@ public:
 	UFUNCTION()
 	void RegenerateStamina();
 
+	UFUNCTION(BlueprintCallable)
 	bool IsCrouching() const { return bIsCrouching; }
 
 private:
