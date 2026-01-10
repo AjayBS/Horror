@@ -19,5 +19,8 @@ class HORRORSCARE_API AL1GameState : public AGameStateBase
 public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnDoorUnlocked OnDoorUnlocked;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsEmotionsUnlocked();
 	
 };
