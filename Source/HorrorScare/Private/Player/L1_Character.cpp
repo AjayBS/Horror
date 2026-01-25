@@ -12,7 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/BPC_Movement.h"
-#include "UI/Widgets/HGUserWidget.h"
+#include "UI/Widgets/MainHUDUserWidget.h"
 
 // Sets default values
 AL1_Character::AL1_Character()
@@ -208,7 +208,7 @@ void AL1_Character::EquipPreviousWeapon()
 
 void AL1_Character::InitializeHUD()
 {
-    HUDWidget = CreateWidget<UHGUserWidget>(GetWorld(), HUDWidgetClass);
+    HUDWidget = CreateWidget<UMainHUDUserWidget>(GetWorld(), HUDWidgetClass);
     if(HUDWidget)
 	{
 		HUDWidget->AddToViewport();

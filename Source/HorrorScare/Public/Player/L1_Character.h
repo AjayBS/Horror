@@ -9,7 +9,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
-class UHGUserWidget;
+class UMainHUDUserWidget;
 class USpotLightComponent;
 class UBPC_Movement;
 class UBPCInventory;
@@ -47,10 +47,10 @@ public:
 	TObjectPtr<USpotLightComponent> Flashlight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
-	TSubclassOf<UHGUserWidget> HUDWidgetClass;
+	TSubclassOf<UMainHUDUserWidget> HUDWidgetClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
-	TObjectPtr<UHGUserWidget> HUDWidget;
+	TObjectPtr<UMainHUDUserWidget> HUDWidget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UBPC_Movement> BPCMovementComponent;
